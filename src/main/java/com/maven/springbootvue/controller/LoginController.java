@@ -59,6 +59,22 @@ public class LoginController {
     }
 
     /**
+    *@description：退出登录
+    *@Param:
+    *@return: 
+    *@Author: 谢秉均
+    *@date: 2022/10/12--15:24
+    */
+    @RequestMapping(value = "logout",method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject logout(@RequestBody String token){
+        System.out.println("信息："+token);
+        result.put("code",20000);
+        JSONObject json = JSON.parseObject(JSONObject.toJSONString(result));
+        return json;
+    }
+
+    /**
     *@description：  获取验证码
     *@Param:
     *@return:
@@ -76,7 +92,7 @@ public class LoginController {
         //将验证码图片输出到登录界面
         try{
             ImageIO.write(verifiCodeImage,"JPEG",response.getOutputStream());
-            logger.error("验证码图片获取成功");
+            logger.info("验证码图片获取成功");
         }catch (IOException e){
             e.printStackTrace();
             logger.error("验证码图片获取失败");
