@@ -74,6 +74,16 @@ public class LoginController {
         return json;
     }
 
+    @RequestMapping(value = "updatepassword",method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject updatepassword(@RequestBody String message){
+        System.out.println("修改表单："+message);
+        result.put("code",20000);
+        result.put("result","修改密码成功");
+        JSONObject json = JSON.parseObject(JSONObject.toJSONString(result));
+        return json;
+    }
+
     /**
     *@description：  获取验证码
     *@Param:
