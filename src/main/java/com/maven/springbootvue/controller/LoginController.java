@@ -17,8 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author 谢秉均
@@ -50,9 +49,12 @@ public class LoginController {
     @ResponseBody
     public JSONObject logininfo( String token){
         System.out.println("信息："+token);
+        List<String> roles = Arrays.asList("student");
         result.put("code",20000);
         result.put("data","info");
-        result.put("avatar","@assets/admin.gif");
+        result.put("name","lucy");
+        result.put("userID","396012");
+        result.put("roles",roles);
         result.put("avatar","image/admin.gif");
         JSONObject json = JSON.parseObject(JSONObject.toJSONString(result));
         return json;
