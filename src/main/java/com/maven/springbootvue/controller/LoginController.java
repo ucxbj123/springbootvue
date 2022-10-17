@@ -2,9 +2,11 @@ package com.maven.springbootvue.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.maven.springbootvue.Service.Impl.StudentServiceImpl;
 import com.maven.springbootvue.Util.CreateVerifiCodeImageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,15 +36,79 @@ public class LoginController {
 
     Map<String,Object> result  = new HashMap<>();
 
-    @RequestMapping("login")
+    @Autowired
+    private StudentServiceImpl studentService;
+
+    @RequestMapping(value = "login",method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject login(@RequestBody String msg){
+    public JSONObject login(@RequestBody String msg, HttpServletRequest request){
+        //储存返回信息
+        Map<String,Object> Result  = new HashMap<>();
+        //输出获取的登录表单信息
         System.out.println("信息："+msg);
-        result.put("code",20000);
-        result.put("token","lucy");
-        result.put("name","lucy");
-        JSONObject json = JSON.parseObject(JSONObject.toJSONString(result));
-        return json;
+        //转成JSON对象方便获取属性信息
+        JSONObject jsonmsg = JSON.parseObject(msg);
+        //获取登录框验证码
+        String verifiCode = String.valueOf(jsonmsg.get("verifiCode"));
+        //获取session验证码
+        String sessionVerifiCode = String.valueOf(request.getSession().getAttribute("verifiCode"));
+
+        //若验证码对则继续进行密码账号验证，错误则返回登录失败
+        if (verifiCode.equals(sessionVerifiCode)){
+            //获取用户类型
+            String usertype = String.valueOf(jsonmsg.get("usertype"));
+            //账号密码
+            String userID = String.valueOf(jsonmsg.get("userID"));
+            String password = String.valueOf(jsonmsg.get("password"));
+            String token = userID+"-"+usertype+"-"+password;
+            if (usertype.equals("student")){//学生账号验证
+                Boolean re = studentService.loginForm(userID,password);
+                if(re){
+                    Result.put("code",20000);
+                    Result.put("token",token);
+                    Result.put("name",studentService.getStudent(userID).getName());
+                    Result.put("status",true);
+                    JSONObject json = JSON.parseObject(JSONObject.toJSONString(Result));
+                    return json;
+                }else {
+                    Result.put("code",20000);
+                    Result.put("status",false);
+                    Result.put("msg","账号密码错误");
+                    JSONObject json = JSON.parseObject(JSONObject.toJSONString(Result));
+                    return json;
+                }
+            }else if (usertype.equals("teacher")){//老师账号验证
+                Result.put("code",20000);
+                Result.put("status",false);
+                Result.put("msg","非法用户");
+                JSONObject json = JSON.parseObject(JSONObject.toJSONString(Result));
+                return json;
+
+            }else if (usertype.equals("admin")){ //管理员账号验证
+                Result.put("code",20000);
+                Result.put("status",false);
+                Result.put("msg","非法用户");
+                JSONObject json = JSON.parseObject(JSONObject.toJSONString(Result));
+                return json;
+
+            }else{
+                Result.put("code",20000);
+                Result.put("status",false);
+                Result.put("msg","非法用户");
+                JSONObject json = JSON.parseObject(JSONObject.toJSONString(Result));
+                return json;
+            }
+
+
+        }else {
+            //验证码错误
+            Result.put("code",20000);
+            Result.put("status",false);
+            Result.put("msg","验证码错误");
+            JSONObject json = JSON.parseObject(JSONObject.toJSONString(Result));
+            return json;
+        }
+
     }
 
     @RequestMapping(value = "info",method = RequestMethod.GET)
@@ -93,21 +159,23 @@ public class LoginController {
     *@Author: 谢秉均
     *@date: 2022/9/22--14:10
     */
-    @RequestMapping("/getVerifiCodeImage")
+    @RequestMapping(value = "/getVerifiCodeImage",method = RequestMethod.GET)
     public void getVerifiCodeImage(HttpServletRequest request, HttpServletResponse response){
         //生成验证码图片
         BufferedImage verifiCodeImage = CreateVerifiCodeImageUtil.getVerifiCodeImage();
-        //将验证码String存在session
+        //验证码
         String verifiCode = String.valueOf(CreateVerifiCodeImageUtil.getVerifiCode());
-        HttpSession session=request.getSession();
-        session.setAttribute("verifiCode",verifiCode);
+        HttpSession session = request.getSession();
         //将验证码图片输出到登录界面
         try{
             ImageIO.write(verifiCodeImage,"JPEG",response.getOutputStream());
             logger.info("验证码图片获取成功");
+            logger.info("验证码："+verifiCode);
         }catch (IOException e){
             e.printStackTrace();
             logger.error("验证码图片获取失败");
         }
+        // 存储验证码Session
+        session.setAttribute("verifiCode", verifiCode);
     }
 }
