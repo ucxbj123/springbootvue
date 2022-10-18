@@ -1,0 +1,27 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maven.springbootvue.Mapper.TeacherMapper">
+    <!-- Teacher Login(@Param("tno") String userID, @Param("password") String password); 登录验证-->
+    <select id="Login" resultType="teacher">
+        SELECT id,
+        tno,
+        name,
+        gender,
+        password,
+        email,
+        telephone,
+        address,
+        portrait_path,
+        clazz_name,
+        isdelete
+        FROM tb_teacher
+        WHERE tno = #{tno}
+        AND password = #{password}
+    </select>
+
+    <!-- Teacher getTeacher(@Param("tno") String userID);获取教师信息-->
+    <select id="getTeacher" resultType="teacher">
+        select * from tb_teacher where tno = #{tno}
+    </select>
+</mapper>

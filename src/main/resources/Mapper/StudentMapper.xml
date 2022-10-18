@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.maven.springbootvue.Mapper.StudentMapper">
 
-    <!-- Student Login(@Param("sno") String userID, @Param("password") String password);-->
+    <!-- Student Login(@Param("sno") String userID, @Param("password") String password); 登录验证-->
     <select id="Login" resultType="student">
         SELECT id,
                sno,
@@ -16,12 +16,13 @@
                telephone,
                address,
                introducation,
-               clazz_name
+               clazz_name,
+               isdelete
         FROM tb_student
         WHERE sno = #{sno} AND password = #{password}
     </select>
 
-    <!-- Student getStudent(@Param("sno") String userID);-->
+    <!-- Student getStudent(@Param("sno") String userID); 获取学生信息-->
     <select id="getStudent" resultType="student">
         select * from tb_student where sno = #{sno}
     </select>

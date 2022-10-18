@@ -2,7 +2,9 @@ package com.maven.springbootvue.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.maven.springbootvue.Service.Impl.AdminServiceImpl;
 import com.maven.springbootvue.Service.Impl.StudentServiceImpl;
+import com.maven.springbootvue.Service.Impl.TeacherServiceImpl;
 import com.maven.springbootvue.Util.CreateVerifiCodeImageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,11 +41,19 @@ public class LoginController {
     @Autowired
     private StudentServiceImpl studentService;
 
+    @Autowired
+    private TeacherServiceImpl teacherService;
+
+    @Autowired
+    private AdminServiceImpl adminService;
+
     @RequestMapping(value = "login",method = RequestMethod.POST)
     @ResponseBody
     public JSONObject login(@RequestBody String msg, HttpServletRequest request){
         //储存返回信息
         Map<String,Object> Result  = new HashMap<>();
+        //正常返回结果的状态码
+        Result.put("code",20000);
         //输出获取的登录表单信息
         System.out.println("信息："+msg);
         //转成JSON对象方便获取属性信息
@@ -55,59 +65,71 @@ public class LoginController {
 
         //若验证码对则继续进行密码账号验证，错误则返回登录失败
         if (verifiCode.equals(sessionVerifiCode)){
+
             //获取用户类型
             String usertype = String.valueOf(jsonmsg.get("usertype"));
             //账号密码
             String userID = String.valueOf(jsonmsg.get("userID"));
             String password = String.valueOf(jsonmsg.get("password"));
             String token = userID+"-"+usertype+"-"+password;
+            //校验正确则移除session的验证码，需要重新获取
+            request.getSession().removeAttribute("verifiCode");
             if (usertype.equals("student")){//学生账号验证
-                Boolean re = studentService.loginForm(userID,password);
-                if(re){
-                    Result.put("code",20000);
+                Map<String, Object> re = studentService.loginForm(userID,password);//获取验证结果
+                Boolean status = (Boolean) re.get("status");
+                if (status){
                     Result.put("token",token);
                     Result.put("name",studentService.getStudent(userID).getName());
                     Result.put("status",true);
-                    JSONObject json = JSON.parseObject(JSONObject.toJSONString(Result));
-                    return json;
                 }else {
-                    Result.put("code",20000);
                     Result.put("status",false);
-                    Result.put("msg","账号密码错误");
-                    JSONObject json = JSON.parseObject(JSONObject.toJSONString(Result));
-                    return json;
+                    Result.put("msg",re.get("msg"));
                 }
-            }else if (usertype.equals("teacher")){//老师账号验证
-                Result.put("code",20000);
-                Result.put("status",false);
-                Result.put("msg","非法用户");
-                JSONObject json = JSON.parseObject(JSONObject.toJSONString(Result));
-                return json;
+
+            }else if (usertype.equals("teacher")){//教师账号验证
+
+                Map<String, Object> re = teacherService.loginForm(userID,password);//获取验证结果
+                System.out.println("教师"+re.get("status"));
+                Boolean status = (Boolean) re.get("status");
+                if (status){
+                    Result.put("token",token);
+                    Result.put("name",teacherService.getTeacher(userID).getName());
+                    Result.put("status",true);
+                }else {
+                    Result.put("status",false);
+                    Result.put("msg",re.get("msg"));
+                }
 
             }else if (usertype.equals("admin")){ //管理员账号验证
-                Result.put("code",20000);
-                Result.put("status",false);
-                Result.put("msg","非法用户");
-                JSONObject json = JSON.parseObject(JSONObject.toJSONString(Result));
-                return json;
+
+                Map<String, Object> re = adminService.loginForm(userID,password);//获取验证结果
+                System.out.println("admin:"+re.get("status"));
+                Boolean status = (Boolean) re.get("status");
+                if (status){
+                    Result.put("token",token);
+                    Result.put("name",adminService.getAdmin(userID).getName());
+                    Result.put("status",true);
+                }else {
+                    Result.put("status",false);
+                    Result.put("msg",re.get("msg"));
+                }
 
             }else{
-                Result.put("code",20000);
+                //预防前端返回非法的账号类型
                 Result.put("status",false);
                 Result.put("msg","非法用户");
-                JSONObject json = JSON.parseObject(JSONObject.toJSONString(Result));
-                return json;
             }
 
 
         }else {
             //验证码错误
-            Result.put("code",20000);
             Result.put("status",false);
             Result.put("msg","验证码错误");
-            JSONObject json = JSON.parseObject(JSONObject.toJSONString(Result));
-            return json;
+
         }
+        //统一最后返回结果
+        JSONObject json = JSON.parseObject(JSONObject.toJSONString(Result));
+        return json;
 
     }
 

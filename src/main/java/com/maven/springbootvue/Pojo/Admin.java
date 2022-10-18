@@ -3,57 +3,36 @@ package com.maven.springbootvue.Pojo;
 import org.springframework.stereotype.Component;
 
 /**
- * @author 谢秉均
- * @date 2022/10/17--23:18
+ *@description：
+ *@Param:
+ *@return:
+ *@Author: 谢秉均
+ *@date: 2022/10/18--16:24
  */
 @Component
-public class Student {
+public class Admin {
 
     private Integer id; //ID
-    private String sno; //学号
     private String name; //姓名
-    private char gender = '男';//default
+    private char gender; //性别
     private String password; //密码
-    private String email; //邮件
+    private String email; //邮箱
     private String telephone; //电话
-    private String address; //住址
-    private String introducation; //简介
+    private String address; //地址
     private String portrait_path;//存储头像的项目路径
-    private String clazz_name;//班级名称
-    private Integer isdelete = 0;//默认是未删除的
-
-    public Student(Integer id, String sno, String name, char gender, String password, String email, String telephone, String address, String introducation, String portrait_path, String clazz_name, Integer isdelete) {
-        this.id = id;
-        this.sno = sno;
-        this.name = name;
-        this.gender = gender;
-        this.password = password;
-        this.email = email;
-        this.telephone = telephone;
-        this.address = address;
-        this.introducation = introducation;
-        this.portrait_path = portrait_path;
-        this.clazz_name = clazz_name;
-        this.isdelete = isdelete;
-    }
-
-    public Student() {
-    }
+    private Integer isdelete = 0; //默认未删除
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "Admin{" +
                 "id=" + id +
-                ", sno='" + sno + '\'' +
                 ", name='" + name + '\'' +
                 ", gender=" + gender +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", telephone='" + telephone + '\'' +
                 ", address='" + address + '\'' +
-                ", introducation='" + introducation + '\'' +
                 ", portrait_path='" + portrait_path + '\'' +
-                ", clazz_name='" + clazz_name + '\'' +
                 ", isdelete=" + isdelete +
                 '}';
     }
@@ -72,14 +51,6 @@ public class Student {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getSno() {
-        return sno;
-    }
-
-    public void setSno(String sno) {
-        this.sno = sno;
     }
 
     public String getName() {
@@ -130,27 +101,11 @@ public class Student {
         this.address = address;
     }
 
-    public String getIntroducation() {
-        return introducation;
-    }
-
-    public void setIntroducation(String introducation) {
-        this.introducation = introducation;
-    }
-
     public String getPortrait_path() {
         return portrait_path;
     }
 
     public void setPortrait_path(String portrait_path) {
         this.portrait_path = portrait_path;
-    }
-
-    public String getClazz_name() {
-        return clazz_name;
-    }
-
-    public void setClazz_name(String clazz_name) {
-        this.clazz_name = clazz_name;
     }
 }
