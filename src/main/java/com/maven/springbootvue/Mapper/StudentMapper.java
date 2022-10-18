@@ -16,4 +16,7 @@ public interface StudentMapper {
 
     //获取单个学生信息
     Student getStudent(@Param("sno") String userID);
+
+    //修改密码
+    int updatePassword(@Param("sno") String sno, @Param("password") String newPassword);
 }

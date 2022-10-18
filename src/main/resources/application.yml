@@ -14,6 +14,8 @@ spring:
 mybatis-plus:
   mapper-locations: classpath:Mapper/*.xml
   type-aliases-package: com.maven.springbootvue.Pojo
+  configuration:
+    map-underscore-to-camel-case: false   #mybatis-plus默认开启驼峰
 
   global-config:
     db-config:

@@ -5,6 +5,7 @@
     <!--  Admin Login(@Param("tno") String userID, @Param("password") String password);登录验证-->
     <select id="Login" resultType="admin">
         SELECT id,
+        ano,
         name,
         gender,
         password,
@@ -13,12 +14,18 @@
         address,
         portrait_path
         FROM tb_admin
-        WHERE name = #{username}
+        WHERE ano = #{username}
         AND password = #{password}
     </select>
 
     <!-- Admin getAdmin(@Param("username") String userID);获取管理员信息-->
     <select id="getAdmin" resultType="admin">
-        select * from tb_admin where name = #{username}
+        select * from tb_admin where ano = #{username}
     </select>
+
+    <!-- Integer updatePassword(@Param("ano") String ano , @Param("password") String newPassword);修改密码-->
+    <update id="updatePassword">
+        update tb_admin set password = #{password} where ano = #{ano}
+    </update>
+
 </mapper>

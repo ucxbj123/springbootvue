@@ -46,4 +46,16 @@ public class StudentServiceImpl {
         return studentMapper.getStudent(userID);
     }
 
+    /**
+    *@description：修改密码
+    *@Param:
+    *@return:
+    *@Author: 谢秉均
+    *@date: 2022/10/18--23:30
+    */
+    public int updatePassword(String sno , String newPassword){
+        return studentMapper.updatePassword(sno, newPassword);
+    }
+
+
 }

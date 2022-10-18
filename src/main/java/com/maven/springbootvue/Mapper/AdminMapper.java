@@ -5,6 +5,8 @@ import com.maven.springbootvue.Pojo.Admin;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 /**
  * @author 谢秉均
  * @description
@@ -17,4 +19,7 @@ public interface AdminMapper {
 
     //获取管理员信息
     Admin getAdmin(@Param("username") String userID);
+
+    //修改密码
+    Integer updatePassword(@Param("ano") String ano , @Param("password") String newPassword);
 }

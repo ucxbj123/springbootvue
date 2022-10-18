@@ -14,19 +14,37 @@ public class Admin {
 
     private Integer id; //ID
     private String name; //姓名
+    private String ano; //工号
     private char gender; //性别
     private String password; //密码
     private String email; //邮箱
     private String telephone; //电话
     private String address; //地址
-    private String portrait_path;//存储头像的项目路径
+    private String portrait_path = "image/admin.gif";//存储头像的项目路径
     private Integer isdelete = 0; //默认未删除
+
+    public Admin() {
+    }
+
+    public Admin(Integer id, String name, String ano, char gender, String password, String email, String telephone, String address, String portrait_path, Integer isdelete) {
+        this.id = id;
+        this.name = name;
+        this.ano = ano;
+        this.gender = gender;
+        this.password = password;
+        this.email = email;
+        this.telephone = telephone;
+        this.address = address;
+        this.portrait_path = portrait_path;
+        this.isdelete = isdelete;
+    }
 
     @Override
     public String toString() {
         return "Admin{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", ano='" + ano + '\'' +
                 ", gender=" + gender +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
@@ -35,6 +53,14 @@ public class Admin {
                 ", portrait_path='" + portrait_path + '\'' +
                 ", isdelete=" + isdelete +
                 '}';
+    }
+
+    public String getAno() {
+        return ano;
+    }
+
+    public void setAno(String ano) {
+        this.ano = ano;
     }
 
     public Integer getIsdelete() {

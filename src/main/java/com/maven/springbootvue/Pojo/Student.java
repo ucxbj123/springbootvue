@@ -18,7 +18,7 @@ public class Student {
     private String telephone; //电话
     private String address; //住址
     private String introducation; //简介
-    private String portrait_path;//存储头像的项目路径
+    private String portrait_path = "image/pika.gif";//存储头像的项目路径
     private String clazz_name;//班级名称
     private Integer isdelete = 0;//默认是未删除的
 

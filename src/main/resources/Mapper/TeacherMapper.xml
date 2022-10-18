@@ -24,4 +24,9 @@
     <select id="getTeacher" resultType="teacher">
         select * from tb_teacher where tno = #{tno}
     </select>
+
+    <!-- int updatePassword(@Param("tno") String tno , @Param("password") String newPassword);-->
+    <update id="updatePassword">
+        update tb_teacher set password = #{password} where tno = #{tno}
+    </update>
 </mapper>

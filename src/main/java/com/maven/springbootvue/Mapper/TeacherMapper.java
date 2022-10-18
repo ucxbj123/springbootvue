@@ -18,4 +18,7 @@ public interface TeacherMapper {
 
     //获取单个教师信息
     Teacher getTeacher(@Param("tno") String userID);
+
+    //修改密码
+    int updatePassword(@Param("tno") String tno , @Param("password") String newPassword);
 }

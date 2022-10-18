@@ -21,9 +21,9 @@ public class TeacherServiceImpl {
     @Autowired
     private TeacherMapper teacherMapper;
 
-    //教师登录验证
+
     /**
-    *@description：
+    *@description：教师登录验证
     *@Param: 
     *@return: 
     *@Author: 谢秉均
@@ -48,9 +48,9 @@ public class TeacherServiceImpl {
         return map;
     }
 
-    //获取单个教师信息
+
     /**
-    *@description：
+    *@description：获取单个教师信息
     *@Param:
     *@return: 
     *@Author: 谢秉均
@@ -58,6 +58,17 @@ public class TeacherServiceImpl {
     */
     public Teacher getTeacher(String userID){
         return teacherMapper.getTeacher(userID);
+    }
+
+    /**
+    *@description：修改密码
+    *@Param:
+    *@return:
+    *@Author: 谢秉均
+    *@date: 2022/10/18--23:51
+    */
+    public int updatePassword(String tno , String newPassword){
+        return teacherMapper.updatePassword(tno, newPassword);
     }
 
 }

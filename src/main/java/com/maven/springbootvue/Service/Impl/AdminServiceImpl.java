@@ -4,6 +4,7 @@ import com.maven.springbootvue.Mapper.AdminMapper;
 import com.maven.springbootvue.Pojo.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +15,7 @@ import java.util.Map;
  * @date 2022/10/18--16:54
  */
 @Component
+@Transactional
 public class AdminServiceImpl {
 
     @Autowired
@@ -21,7 +23,7 @@ public class AdminServiceImpl {
 
 
     /**
-    *@description：
+    *@description：登录验证
     *@Param:
     *@return:
     *@Author: 谢秉均
@@ -47,7 +49,7 @@ public class AdminServiceImpl {
     }
 
     /**
-    *@description：
+    *@description：获取管理员信息
     *@Param:
     *@return:
     *@Author: 谢秉均
@@ -55,5 +57,16 @@ public class AdminServiceImpl {
     */
     public Admin getAdmin(String userID){
         return  adminMapper.getAdmin(userID);
+    }
+
+    /**
+    *@description：修改密码
+    *@Param:
+    *@return:
+    *@Author: 谢秉均
+    *@date: 2022/10/18--23:08
+    */
+    public int updatePassword(String ano , String newPassword){
+        return adminMapper.updatePassword(ano, newPassword);
     }
 }
