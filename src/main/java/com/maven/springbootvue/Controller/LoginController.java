@@ -48,8 +48,9 @@ public class LoginController {
 
     /**
     *@description：登录验证
-    *@Param:
-    *@return:
+    *@param msg 表单登录信息
+     *@param request 请求
+    *@return
     *@Author: 谢秉均
     *@date: 2022/10/18--20:21
     */
