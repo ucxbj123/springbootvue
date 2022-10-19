@@ -353,4 +353,6 @@ public class LoginController {
         // 存储验证码Session
         session.setAttribute("verifiCode", verifiCode);
     }
+
+
 }

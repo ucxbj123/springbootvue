@@ -10,6 +10,12 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  devtools:
+    restart:
+      #开启热部署
+      enabled: true
+      #重启的根目录设置在此以应用整个项目
+      additional-paths: src/main/java
 
 mybatis-plus:
   mapper-locations: classpath:Mapper/*.xml
@@ -20,3 +26,4 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto
+
