@@ -89,6 +89,7 @@ public class LoginController {
                     Result.put("token",token);
                     Result.put("name",studentService.getStudent(userID).getName());
                     Result.put("status",true);
+                    Result.put("usertype","student");
                 }else {
                     Result.put("status",false);
                     Result.put("msg",re.get("msg"));
@@ -105,6 +106,7 @@ public class LoginController {
                     Result.put("token",token);
                     Result.put("name",teacherService.getTeacher(userID).getName());
                     Result.put("status",true);
+                    Result.put("usertype","teacher");
                 }else {
                     Result.put("status",false);
                     Result.put("msg",re.get("msg"));
@@ -121,6 +123,7 @@ public class LoginController {
                     Result.put("token",token);
                     Result.put("name",adminService.getAdmin(userID).getName());
                     Result.put("status",true);
+                    Result.put("usertype","admin");
                 }else {
                     Result.put("status",false);
                     Result.put("msg",re.get("msg"));
@@ -181,6 +184,7 @@ public class LoginController {
                     Result.put("userID",student.getSno());
                     Result.put("roles",roles);
                     Result.put("avatar",student.getPortrait_path());
+                    Result.put("usertype","student");
                 }else {
                     Result.put("code",500);
                 }
@@ -197,6 +201,7 @@ public class LoginController {
                     Result.put("userID",teacher.getTno());
                     Result.put("roles",roles);
                     Result.put("avatar",teacher.getPortrait_path());
+                    Result.put("usertype","teacher");
                 }else {
                     Result.put("code",500);
                 }
@@ -213,6 +218,7 @@ public class LoginController {
                     Result.put("userID",admin.getAno());
                     Result.put("roles",roles);
                     Result.put("avatar",admin.getPortrait_path());
+                    Result.put("usertype","admin");
                 }else {
                     Result.put("code",500);
                 }
