@@ -94,8 +94,6 @@ public class LoginController {
                 JWTToken token = new JWTToken(JWTUtil.sign(userID,usertype,password));
                 //调用login进行登录验证，若成功则继续往下执行，否则抛出异常
                 subject.login(token);
-                //验证成功则把token存进session
-                request.getSession().setAttribute("token",token.getCredentials());
                 Result.put("token",token.getCredentials());
 
                 //根据用户类型获取用户名
@@ -150,17 +148,10 @@ public class LoginController {
     */
     @RequestMapping(value = "info",method = RequestMethod.GET)
     @ResponseBody
-    public JSONObject logininfo( String token, HttpServletRequest request){
+    public JSONObject logininfo( String token){
         System.out.println("token："+token);
         //储存返回信息
         Map<String,Object> Result  = new HashMap<>();
-        //获取session的token
-        String sessionToken = (String) request.getSession().getAttribute("token");
-        if (!sessionToken.equals(token) || sessionToken == null){//若前端返回的token不一致则属于非法token进行中断验证
-            logger.warn("token与session不一致 非法！！");
-            Result.put("code",500);
-            return JSON.parseObject(JSONObject.toJSONString(Result));
-        }
         //获取token的账号与账号类型
         String[] token2 = new String[]{JWTUtil.getUserID(token),JWTUtil.getUsertype(token)};
 
@@ -218,14 +209,12 @@ public class LoginController {
     */
     @RequestMapping(value = "logout",method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject logout(@RequestBody String token, HttpServletRequest request){
+    public JSONObject logout(@RequestBody String token){
         //储存返回信息
         Map<String,Object> Result  = new HashMap<>();
+        //执行退出登录操作 暂时不知道具体作用
+        SecurityUtils.getSubject().logout();
         System.out.println("注销："+token);
-        String sessionToken = (String) request.getSession().getAttribute("token");
-        if (sessionToken.equals(token) || sessionToken != null){//若token正确或者存在都进行移除token
-            request.getSession().removeAttribute("token");
-        }
         Result.put("code",20000);
         JSONObject json = JSON.parseObject(JSONObject.toJSONString(Result));
         return json;
@@ -241,7 +230,7 @@ public class LoginController {
     */
     @RequestMapping(value = "updatepassword",method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject updatepassword(@RequestBody String message, @RequestHeader(value = "X-Token",required = false) String token, HttpServletRequest request){
+    public JSONObject updatepassword(@RequestBody String message, @RequestHeader(value = "X-Token",required = false) String token){
         //储存返回信息
         Map<String,Object> Result  = new HashMap<>();
         logger.info("修改表单："+message+" headerToken："+token);
@@ -300,7 +289,6 @@ public class LoginController {
         //当修改密码成功的时候，更新token给到客户端与session
         logger.info("updatepassword  旧token："+token);
         String newtoken = JWTUtil.sign(headerToken[0],headerToken[1],newpassword );
-        request.getSession().setAttribute("token",newtoken);
         logger.info("updatepassword  新token："+token);
         Result.put("token",newtoken);
         JSONObject json = JSON.parseObject(JSONObject.toJSONString(Result));
