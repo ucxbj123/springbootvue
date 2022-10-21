@@ -30,6 +30,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
      */
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
+        logger.info(this.getName()+"  拦截url进行验证" );
         if (isLoginAttempt(request,response)){//若header未携带token则直接拦截;若携带则进行口令认证
             executeLogin(request,response);
         }

@@ -61,6 +61,7 @@ public class LoginController {
     @RequestMapping(value = "login",method = RequestMethod.POST)
     @ResponseBody
     public JSONObject login(@RequestBody String msg, HttpServletRequest request){
+        logger.info("start "+this.getClass());
         //储存返回信息
         Map<String,Object> Result  = new HashMap<>();
         //正常返回结果的状态码
@@ -86,6 +87,7 @@ public class LoginController {
             //校验正确则移除session的验证码，需要重新获取
             request.getSession().removeAttribute("verifiCode");
             try {
+
                 //获取subject对象
                 Subject subject  = SecurityUtils.getSubject();
                 //封装请求数据到token
@@ -94,16 +96,25 @@ public class LoginController {
                 subject.login(token);
                 //验证成功则把token存进session
                 request.getSession().setAttribute("token",token.getCredentials());
-                Result.put("token",token);
+                Result.put("token",token.getCredentials());
 
                 //根据用户类型获取用户名
                 switch (usertype){
                     case "student":
                         Result.put("name",studentService.getStudent(userID).getName());
+                        List<String> sturoles = Arrays.asList("student");
+                        Result.put("roles",sturoles);
+                        break;
                     case "teacher" :
                         Result.put("name",teacherService.getTeacher(userID).getName());
+                        List<String> tearoles = Arrays.asList("teacher");
+                        Result.put("roles",tearoles);
+                        break;
                     case "admin":
                         Result.put("name",adminService.getAdmin(userID).getName());
+                        List<String> admroles = Arrays.asList("admin");
+                        Result.put("roles",admroles);
+                        break;
                 }
 
 
@@ -146,10 +157,11 @@ public class LoginController {
         //获取session的token
         String sessionToken = (String) request.getSession().getAttribute("token");
         if (!sessionToken.equals(token) || sessionToken == null){//若前端返回的token不一致则属于非法token进行中断验证
+            logger.warn("token与session不一致 非法！！");
             Result.put("code",500);
             return JSON.parseObject(JSONObject.toJSONString(Result));
         }
-        //获取token的值
+        //获取token的账号与账号类型
         String[] token2 = new String[]{JWTUtil.getUserID(token),JWTUtil.getUsertype(token)};
 
         switch (token2[1]){
@@ -163,7 +175,7 @@ public class LoginController {
                 Result.put("roles",sturoles);
                 Result.put("avatar",student.getPortrait_path());
                 Result.put("usertype","student");
-                break;
+                break;      //记得加break否则会继续往下执行
 
             case "teacher":
                 Result.put("code",20000);
@@ -229,10 +241,10 @@ public class LoginController {
     */
     @RequestMapping(value = "updatepassword",method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject updatepassword(@RequestBody String message, @RequestHeader(value = "X-Token",required = false) String token){
+    public JSONObject updatepassword(@RequestBody String message, @RequestHeader(value = "X-Token",required = false) String token, HttpServletRequest request){
         //储存返回信息
         Map<String,Object> Result  = new HashMap<>();
-        System.out.println("修改表单："+message+" headerToken："+token);
+        logger.info("修改表单："+message+" headerToken："+token);
         //头部信息
         String[] headerToken = new String[]{JWTUtil.getUserID(token),JWTUtil.getUsertype(token)};
         //表单信息
@@ -240,7 +252,7 @@ public class LoginController {
         String oldpassword = jsonmsg.getString("oldpassword");
         String newpassword = jsonmsg.getString("newpassword");
         Result.put("code", 20000);
-        if (token == null || !headerToken[2].equals(oldpassword) || oldpassword == null){ //排除token为空、旧密码为空或者旧密码输入错误情况
+        if (token == null || oldpassword == null){ //排除token为空、旧密码为空或者旧密码输入错误情况
             Result.put("result","修改密码失败");
             Result.put("status", "error");
         }else {
@@ -285,7 +297,12 @@ public class LoginController {
             }
 
         }
-
+        //当修改密码成功的时候，更新token给到客户端与session
+        logger.info("updatepassword  旧token："+token);
+        String newtoken = JWTUtil.sign(headerToken[0],headerToken[1],newpassword );
+        request.getSession().setAttribute("token",newtoken);
+        logger.info("updatepassword  新token："+token);
+        Result.put("token",newtoken);
         JSONObject json = JSON.parseObject(JSONObject.toJSONString(Result));
         return json;
     }

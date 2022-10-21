@@ -73,6 +73,8 @@ public class LoginRealm extends AuthorizingRealm {
         //解密获取UserID与usertype也就是登录账号，账号类型，用于在数据库获取信息
         String userID = JWTUtil.getUserID(token);
         String usertype = JWTUtil.getUsertype(token);
+        logger.info("userID:"+userID);
+        logger.info("usertype:"+usertype);
         //判断token是否为空
         if (StringUtils.isEmpty(userID) || StringUtils.isEmpty(usertype)){
             logger.error("userID or usertype invalid");
@@ -86,8 +88,10 @@ public class LoginRealm extends AuthorizingRealm {
                 throw new AuthenticationException("用户不存在!");
             }
             if (!JWTUtil.verify(token, userID, student.getPassword(), usertype)){
-                logger.error("student token 认证失败");
+                logger.error("学生 token 认证失败");
                 throw new AuthenticationException("token 认证失败");
+            }else {
+                logger.info("student token验证成功");
             }
 
         }else if (usertype.equals("teacher")){//教师账号验证
@@ -98,8 +102,10 @@ public class LoginRealm extends AuthorizingRealm {
                 throw new AuthenticationException("用户不存在!");
             }
             if (!JWTUtil.verify(token, userID, teacher.getPassword(), usertype)){
-                logger.error("student token 认证失败");
+                logger.error("教师 token 认证失败");
                 throw new AuthenticationException("token 认证失败");
+            }else {
+                logger.info("teacher token验证成功");
             }
 
         }else if (usertype.equals("admin")){ //管理员账号验证
@@ -110,8 +116,10 @@ public class LoginRealm extends AuthorizingRealm {
                 throw new AuthenticationException("用户不存在!");
             }
             if (!JWTUtil.verify(token, userID, admin.getPassword(), usertype)){
-                logger.error("student token 认证失败");
+                logger.error("管理员 token 认证失败");
                 throw new AuthenticationException("token 认证失败");
+            }else {
+                logger.info("admin token验证成功");
             }
 
         }else{
