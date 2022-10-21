@@ -4,6 +4,7 @@ package com.maven.springbootvue.Mapper;
 import com.maven.springbootvue.Pojo.Admin;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.Map;
 
@@ -12,7 +13,7 @@ import java.util.Map;
  * @description
  * @date 2022/10/18--16:26
  */
-@Component
+@Repository
 public interface AdminMapper {
     //登录验证
     Admin Login(@Param("username") String userID, @Param("password") String password);

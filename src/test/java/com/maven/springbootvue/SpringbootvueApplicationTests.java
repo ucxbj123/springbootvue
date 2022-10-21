@@ -16,7 +16,7 @@ class SpringbootvueApplicationTests {
 		System.out.println("token信息:"+JWTUtil.getUsertype(token)+" "+JWTUtil.getUserID(token));
 
 		try{
-			TimeUnit.SECONDS.sleep(1);//设置延迟执行检验超时功能
+			TimeUnit.SECONDS.sleep(2);//设置延迟执行检验超时功能
 			System.out.println(JWTUtil.verify(token,"396012","123456","student"));
 		}catch (Exception e){
 			e.printStackTrace();

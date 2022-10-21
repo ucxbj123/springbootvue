@@ -3,12 +3,13 @@ package com.maven.springbootvue.Mapper;
 import com.maven.springbootvue.Pojo.Student;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author 谢秉均
  * @date 2022/10/17--23:31
  */
-@Component
+@Repository
 public interface StudentMapper {
 
     //登录验证

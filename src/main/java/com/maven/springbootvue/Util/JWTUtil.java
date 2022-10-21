@@ -14,7 +14,7 @@ public class JWTUtil {
     private static final Logger log = LoggerFactory.getLogger(JWTUtil.class);
 
     // 过期时间5分钟
-    private static final long EXPIRE_TIME = 30 * 1000;
+    private static final long EXPIRE_TIME =5* 60 * 1000;
 
     /**
      * 生成签名,5min后过期

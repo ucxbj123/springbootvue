@@ -2,6 +2,8 @@ package com.maven.springbootvue.Pojo;
 
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 /**
  *@description：
  *@Param:
@@ -10,7 +12,7 @@ import org.springframework.stereotype.Component;
  *@date: 2022/10/18--16:24
  */
 @Component
-public class Admin {
+public class Admin implements Serializable {
 
     private Integer id; //ID
     private String name; //姓名

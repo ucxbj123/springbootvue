@@ -8,7 +8,11 @@ import com.maven.springbootvue.Pojo.Teacher;
 import com.maven.springbootvue.Service.Impl.AdminServiceImpl;
 import com.maven.springbootvue.Service.Impl.StudentServiceImpl;
 import com.maven.springbootvue.Service.Impl.TeacherServiceImpl;
+import com.maven.springbootvue.Shiro.JWTToken;
 import com.maven.springbootvue.Util.CreateVerifiCodeImageUtil;
+import com.maven.springbootvue.Util.JWTUtil;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,63 +82,40 @@ public class LoginController {
             //账号密码
             String userID = String.valueOf(jsonmsg.get("userID"));
             String password = String.valueOf(jsonmsg.get("password"));
-            String token = userID+"-"+usertype+"-"+password;
+//            String token = userID+"-"+usertype+"-"+password;已用shiro与JWT技术进行整合
             //校验正确则移除session的验证码，需要重新获取
             request.getSession().removeAttribute("verifiCode");
-            if (usertype.equals("student")){//学生账号验证
-                Map<String, Object> re = studentService.loginForm(userID,password);//获取验证结果
-                Boolean status = (Boolean) re.get("status");
-                if (status){
-                    //验证成功则把token存进session
-                    request.getSession().setAttribute("token",token);
-                    Result.put("token",token);
-                    Result.put("name",studentService.getStudent(userID).getName());
-                    Result.put("status",true);
-                    Result.put("usertype","student");
-                }else {
-                    Result.put("status",false);
-                    Result.put("msg",re.get("msg"));
+            try {
+                //获取subject对象
+                Subject subject  = SecurityUtils.getSubject();
+                //封装请求数据到token
+                JWTToken token = new JWTToken(JWTUtil.sign(userID,usertype,password));
+                //调用login进行登录验证，若成功则继续往下执行，否则抛出异常
+                subject.login(token);
+                //验证成功则把token存进session
+                request.getSession().setAttribute("token",token.getCredentials());
+                Result.put("token",token);
+
+                //根据用户类型获取用户名
+                switch (usertype){
+                    case "student":
+                        Result.put("name",studentService.getStudent(userID).getName());
+                    case "teacher" :
+                        Result.put("name",teacherService.getTeacher(userID).getName());
+                    case "admin":
+                        Result.put("name",adminService.getAdmin(userID).getName());
                 }
 
-            }else if (usertype.equals("teacher")){//教师账号验证
 
-                Map<String, Object> re = teacherService.loginForm(userID,password);//获取验证结果
-                System.out.println("教师"+re.get("status"));
-                Boolean status = (Boolean) re.get("status");
-                if (status){
-                    //验证成功则把token存进session
-                    request.getSession().setAttribute("token",token);
-                    Result.put("token",token);
-                    Result.put("name",teacherService.getTeacher(userID).getName());
-                    Result.put("status",true);
-                    Result.put("usertype","teacher");
-                }else {
-                    Result.put("status",false);
-                    Result.put("msg",re.get("msg"));
-                }
-
-            }else if (usertype.equals("admin")){ //管理员账号验证
-
-                Map<String, Object> re = adminService.loginForm(userID,password);//获取验证结果
-                System.out.println("admin:"+re.get("status"));
-                Boolean status = (Boolean) re.get("status");
-                if (status){
-                    //验证成功则把token存进session
-                    request.getSession().setAttribute("token",token);
-                    Result.put("token",token);
-                    Result.put("name",adminService.getAdmin(userID).getName());
-                    Result.put("status",true);
-                    Result.put("usertype","admin");
-                }else {
-                    Result.put("status",false);
-                    Result.put("msg",re.get("msg"));
-                }
-
-            }else{
-                //预防前端返回非法的账号类型
+                Result.put("status",true);
+                Result.put("usertype","teacher");
+            }catch (Exception e){
+                e.printStackTrace();
+                logger.warn("用户登录失败");
                 Result.put("status",false);
-                Result.put("msg","非法用户");
+                Result.put("msg","账号密码错误");
             }
+
 
 
         }else {
@@ -169,60 +150,41 @@ public class LoginController {
             return JSON.parseObject(JSONObject.toJSONString(Result));
         }
         //获取token的值
-        String[] token2 = token.split("-");
+        String[] token2 = new String[]{JWTUtil.getUserID(token),JWTUtil.getUsertype(token)};
 
         switch (token2[1]){
             case "student":
                 //账号密码验证
-                Map<String, Object> re = studentService.loginForm(token2[0],token2[2]);
-                Boolean status = (Boolean) re.get("status");
-                if (status){//账号验证正确则获取用户信息进行返回
-                    Result.put("code",20000);
-                    Student student = studentService.getStudent(token2[0]);
-                    List<String> roles = Arrays.asList("student");
-//                    Result.put("data","info");
-                    Result.put("name",student.getName());
-                    Result.put("userID",student.getSno());
-                    Result.put("roles",roles);
-                    Result.put("avatar",student.getPortrait_path());
-                    Result.put("usertype","student");
-                }else {
-                    Result.put("code",500);
-                }
+                Student student = studentService.getStudent(token2[0]);
+                Result.put("code",20000);
+                List<String> sturoles = Arrays.asList("student");
+                Result.put("name",student.getName());
+                Result.put("userID",student.getSno());
+                Result.put("roles",sturoles);
+                Result.put("avatar",student.getPortrait_path());
+                Result.put("usertype","student");
                 break;
 
             case "teacher":
-                Map<String, Object> teacherResult = teacherService.loginForm(token2[0],token2[2]);
-                Boolean teacherStatus = (Boolean) teacherResult.get("status");
-                if (teacherStatus){//账号验证正确则获取用户信息进行返回
-                    Result.put("code",20000);
-                    Teacher teacher = teacherService.getTeacher(token2[0]);
-                    List<String> roles = Arrays.asList("teacher","student");
-                    Result.put("name",teacher.getName());
-                    Result.put("userID",teacher.getTno());
-                    Result.put("roles",roles);
-                    Result.put("avatar",teacher.getPortrait_path());
-                    Result.put("usertype","teacher");
-                }else {
-                    Result.put("code",500);
-                }
+                Result.put("code",20000);
+                Teacher teacher = teacherService.getTeacher(token2[0]);
+                List<String> tearoles = Arrays.asList("teacher","student");
+                Result.put("name",teacher.getName());
+                Result.put("userID",teacher.getTno());
+                Result.put("roles",tearoles);
+                Result.put("avatar",teacher.getPortrait_path());
+                Result.put("usertype","teacher");
                 break;
 
             case "admin":
-                Map<String, Object> adminResult = adminService.loginForm(token2[0],token2[2]);
-                Boolean adminStatus = (Boolean) adminResult.get("status");
-                if (adminStatus){//账号验证正确则获取用户信息进行返回
-                    Result.put("code",20000);
-                    Admin admin = adminService.getAdmin(token2[0]);
-                    List<String> roles = Arrays.asList("admin");
-                    Result.put("name",admin.getName());
-                    Result.put("userID",admin.getAno());
-                    Result.put("roles",roles);
-                    Result.put("avatar",admin.getPortrait_path());
-                    Result.put("usertype","admin");
-                }else {
-                    Result.put("code",500);
-                }
+                Result.put("code",20000);
+                Admin admin = adminService.getAdmin(token2[0]);
+                List<String> adminroles = Arrays.asList("admin");
+                Result.put("name",admin.getName());
+                Result.put("userID",admin.getAno());
+                Result.put("roles",adminroles);
+                Result.put("avatar",admin.getPortrait_path());
+                Result.put("usertype","admin");
                 break;
 
             default:
@@ -272,7 +234,7 @@ public class LoginController {
         Map<String,Object> Result  = new HashMap<>();
         System.out.println("修改表单："+message+" headerToken："+token);
         //头部信息
-        String[] headerToken = token.split("-");
+        String[] headerToken = new String[]{JWTUtil.getUserID(token),JWTUtil.getUsertype(token)};
         //表单信息
         JSONObject jsonmsg = JSON.parseObject(message);
         String oldpassword = jsonmsg.getString("oldpassword");

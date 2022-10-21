@@ -2,12 +2,14 @@ package com.maven.springbootvue.Pojo;
 
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 /**
  * @author 谢秉均
  * @date 2022/10/17--23:18
  */
 @Component
-public class Student {
+public class Student implements Serializable {
 
     private Integer id; //ID
     private String sno; //学号

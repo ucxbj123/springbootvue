@@ -1,5 +1,7 @@
 package com.maven.springbootvue.Pojo;
 
+import java.io.Serializable;
+
 /**
 *@description：
 *@Param: 
@@ -7,7 +9,7 @@ package com.maven.springbootvue.Pojo;
 *@Author: 谢秉均
 *@date: 2022/10/18--15:06
 */
-public class Teacher {
+public class Teacher implements Serializable {
 
     private Integer id; //ID
     private String tno; //工号
