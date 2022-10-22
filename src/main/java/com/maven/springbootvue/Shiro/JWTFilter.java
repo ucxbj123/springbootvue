@@ -19,22 +19,25 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     private static final Logger logger = LoggerFactory.getLogger(JWTFilter.class);
 
 
-    /** 博主的解释
-     * 这里我们详细说明下为什么最终返回的都是true，即允许访问
-     * 例如我们提供一个地址 GET /article
-     * 登入用户和游客看到的内容是不同的
-     * 如果在这里返回了false，请求会被直接拦截，用户看不到任何东西
-     * 所以我们在这里返回true，Controller中可以通过 subject.isAuthenticated() 来判断用户是否登入
-     * 如果有些资源只有登入用户才能访问，我们只需要在方法上面加上 @RequiresAuthentication 注解即可
-     * 但是这样做有一个缺点，就是不能够对GET,POST等请求进行分别过滤鉴权(因为我们重写了官方的方法)，但实际上对应用影响不大
+
+    /**
+     * 执行用户token认证，成功则继续执行请求，失败则进入shiro的错误处理控制器
      */
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         logger.info(this.getName()+"  拦截url进行验证" );
         if (isLoginAttempt(request,response)){//若header未携带token则直接拦截;若携带则进行口令认证
-            executeLogin(request,response);
+            try {//手动捕获认证抛出的异常，若成功则继续执行请求，失败则跳到onAccessDenied进行后续处理
+                executeLogin(request,response);
+                return true;
+            }catch (Exception e){
+                logger.warn("isAccessAllowed认证失败 跳转到onAccessDenied进行处理");
+                return false;
+            }
+        }else{
+            return false;
         }
-        return super.isAccessAllowed(request, response, mappedValue);
+//        return super.isAccessAllowed(request, response, mappedValue);
     }
 
     /**
@@ -67,5 +70,19 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         getSubject(request, response).login(token);
         // 如果没有抛出异常则代表登入成功，返回true
         return true;
+    }
+
+    /**
+     * 认证失败后在此方法执行操作
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @Override
+    protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
+        request.getRequestDispatcher("/filterError/JWTFilter").forward(request,response);
+        return false;//因为要做服务转发，如果设置为true会陷入死循环
+
     }
 }

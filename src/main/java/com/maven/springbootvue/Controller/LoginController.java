@@ -2,6 +2,10 @@ package com.maven.springbootvue.Controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.maven.springbootvue.Dto.TokenResponseCodeEnum;
 import com.maven.springbootvue.Pojo.Admin;
 import com.maven.springbootvue.Pojo.Student;
 import com.maven.springbootvue.Pojo.Teacher;
@@ -12,6 +16,7 @@ import com.maven.springbootvue.Shiro.JWTToken;
 import com.maven.springbootvue.Util.CreateVerifiCodeImageUtil;
 import com.maven.springbootvue.Util.JWTUtil;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,44 +91,38 @@ public class LoginController {
 //            String token = userID+"-"+usertype+"-"+password;已用shiro与JWT技术进行整合
             //校验正确则移除session的验证码，需要重新获取
             request.getSession().removeAttribute("verifiCode");
-            try {
 
-                //获取subject对象
-                Subject subject  = SecurityUtils.getSubject();
-                //封装请求数据到token
-                JWTToken token = new JWTToken(JWTUtil.sign(userID,usertype,password));
-                //调用login进行登录验证，若成功则继续往下执行，否则抛出异常
-                subject.login(token);
-                Result.put("token",token.getCredentials());
+            //获取subject对象
+            Subject subject  = SecurityUtils.getSubject();
+            //封装请求数据到token
+            JWTToken token = new JWTToken(JWTUtil.sign(userID,usertype,password));
 
-                //根据用户类型获取用户名
-                switch (usertype){
-                    case "student":
-                        Result.put("name",studentService.getStudent(userID).getName());
-                        List<String> sturoles = Arrays.asList("student");
-                        Result.put("roles",sturoles);
-                        break;
-                    case "teacher" :
-                        Result.put("name",teacherService.getTeacher(userID).getName());
-                        List<String> tearoles = Arrays.asList("teacher");
-                        Result.put("roles",tearoles);
-                        break;
-                    case "admin":
-                        Result.put("name",adminService.getAdmin(userID).getName());
-                        List<String> admroles = Arrays.asList("admin");
-                        Result.put("roles",admroles);
-                        break;
-                }
+            //调用login进行登录验证，若成功则继续往下执行，否则抛出异常
+            subject.login(token);
+            Result.put("token",token.getCredentials());
 
-
-                Result.put("status",true);
-                Result.put("usertype","teacher");
-            }catch (Exception e){
-                e.printStackTrace();
-                logger.warn("用户登录失败");
-                Result.put("status",false);
-                Result.put("msg","账号密码错误");
+            //根据用户类型获取用户名
+            switch (usertype){
+                case "student":
+                    Result.put("name",studentService.getStudent(userID).getName());
+                    List<String> sturoles = Arrays.asList("student");
+                    Result.put("roles",sturoles);
+                    break;
+                case "teacher" :
+                    Result.put("name",teacherService.getTeacher(userID).getName());
+                    List<String> tearoles = Arrays.asList("teacher");
+                    Result.put("roles",tearoles);
+                    break;
+                case "admin":
+                    Result.put("name",adminService.getAdmin(userID).getName());
+                    List<String> admroles = Arrays.asList("admin");
+                    Result.put("roles",admroles);
+                    break;
             }
+
+
+            Result.put("status",true);
+            Result.put("usertype","teacher");
 
 
 

@@ -22,8 +22,10 @@ mybatis-plus:
   type-aliases-package: com.maven.springbootvue.Pojo
   configuration:
     map-underscore-to-camel-case: false   #mybatis-plus默认开启驼峰
-
   global-config:
     db-config:
       id-type: auto
+
+#shiro:
+
 

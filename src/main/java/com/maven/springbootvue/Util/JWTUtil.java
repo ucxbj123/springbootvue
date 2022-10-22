@@ -13,8 +13,8 @@ public class JWTUtil {
 
     private static final Logger log = LoggerFactory.getLogger(JWTUtil.class);
 
-    // 过期时间5分钟
-    private static final long EXPIRE_TIME =10* 60 * 1000;
+    // 过期时间5小时
+    private static final long EXPIRE_TIME = 5 * 60 * 60 * 1000;
 
     /**
      * 生成签名,5min后过期
@@ -51,14 +51,8 @@ public class JWTUtil {
                 .withClaim("usertype",usertype)
                 .build();
         //解析指定的token，根据设置好的超时时间和用户信息进行校验，若都能匹配则会正常执行；若有一项不对则会直接抛出异常，返回false
-        try {
-            DecodedJWT jwt = verifier.verify(token);
-            log.info("token校验成功");
-            return true;
-        }catch (Exception e){
-            log.warn("token校验失败，token非法！！");
-            return false;
-        }
+        DecodedJWT jwt = verifier.verify(token);
+        return true;
     }
 
     /**
