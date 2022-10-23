@@ -15,6 +15,7 @@ public class JWTUtil {
 
     // 过期时间5小时,生成签名时获取的时间是以毫秒为单位
     private static final long EXPIRE_TIME = 5 * 60 * 60 * 1000;
+//    private static final long EXPIRE_TIME =  10 * 1000;
 
     /**
      * 生成签名,5小时后过期

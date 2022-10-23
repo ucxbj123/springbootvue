@@ -96,6 +96,7 @@ public class LoginController {
             Subject subject  = SecurityUtils.getSubject();
             //封装请求数据到token
             JWTToken token = new JWTToken(JWTUtil.sign(userID,usertype,password));
+            token.setRememberMe(true);
 
             //调用login进行登录验证，若成功则继续往下执行，否则抛出异常
             subject.login(token);

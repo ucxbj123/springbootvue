@@ -107,7 +107,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         //表明服务器允许请求中携带字段 ，如Cache-Control、Content-Type、Expires等
         httpServletResponse.setHeader("Access-Control-Allow-Headers", httpServletRequest.getHeader("Access-Control-Request-Headers"));
         /**
-         * 跨域时会首先发送一个option请求，这里我们给option请求直接返回正常状态，进行拦截
+         * 跨域时有的浏览器发送一个option请求，这里我们给option请求直接返回正常状态，进行拦截
          * 说明：
          * 预检请求（option请求），用来让服务端返回请求允许的方法（如get、post），orgin（来源|域名），以及是否需要Credentials(认证信息)等
          */
