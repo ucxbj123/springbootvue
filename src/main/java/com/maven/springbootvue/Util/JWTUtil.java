@@ -13,13 +13,14 @@ public class JWTUtil {
 
     private static final Logger log = LoggerFactory.getLogger(JWTUtil.class);
 
-    // 过期时间5小时
+    // 过期时间5小时,生成签名时获取的时间是以毫秒为单位
     private static final long EXPIRE_TIME = 5 * 60 * 60 * 1000;
 
     /**
-     * 生成签名,5min后过期
+     * 生成签名,5小时后过期
      *
      * @param userID 用户名
+     * @param usertype  用户类型
      * @param secret   用户的密码
      * @return 加密的token
      */
@@ -40,7 +41,9 @@ public class JWTUtil {
      * 校验token是否正确
      *
      * @param token  密钥
+     * @param userID  登录账号
      * @param secret 用户的密码
+     * @param usertype  用户类型
      * @return 是否正确
      */
     public static Boolean verify(String token, String userID, String secret, String usertype) {
@@ -50,7 +53,7 @@ public class JWTUtil {
                 .withClaim("userID", userID)
                 .withClaim("usertype",usertype)
                 .build();
-        //解析指定的token，根据设置好的超时时间和用户信息进行校验，若都能匹配则会正常执行；若有一项不对则会直接抛出异常，返回false
+        //解析指定的token，根据设置好的超时时间和用户信息进行校验，若都能匹配则会正常执行；若有一项不对则会直接抛出异常
         DecodedJWT jwt = verifier.verify(token);
         return true;
     }
