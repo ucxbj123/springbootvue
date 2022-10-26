@@ -1,11 +1,13 @@
 package com.maven.springbootvue.Mapper;
 
 
+import com.maven.springbootvue.Dto.UserInfo;
 import com.maven.springbootvue.Pojo.Admin;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,4 +25,7 @@ public interface AdminMapper {
 
     //修改密码
     Integer updatePassword(@Param("ano") String ano , @Param("password") String newPassword);
+
+    //获取管理员信息，根据传入的账号进行查询，若值为null则查询全部
+    List<UserInfo> getAdmins(@Param("ano") String userID);
 }

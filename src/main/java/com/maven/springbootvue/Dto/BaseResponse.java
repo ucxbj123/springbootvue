@@ -11,7 +11,6 @@ import org.springframework.lang.Nullable;
  */
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Data
 public class BaseResponse<T> {
     /**
@@ -36,5 +35,10 @@ public class BaseResponse<T> {
     private Integer code;
 
 
-
+    public BaseResponse(boolean success, String msg, @Nullable T data, Integer code) {
+        this.success = success;
+        this.msg = msg;
+        this.data = data;
+        this.code = code;
+    }
 }

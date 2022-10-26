@@ -33,4 +33,26 @@
     <update id="updatePassword">
         update tb_teacher set password = #{password} where tno = #{tno}
     </update>
+
+    <resultMap id="UserMap" type="com.maven.springbootvue.Dto.UserInfo">
+        <id property="id" column="id" />
+        <result property="userID" column="tno" />
+        <result property="name" column="name" />
+        <result property="telephone" column="telephone" />
+        <result property="email" column="email" />
+        <result property="address" column="address" />
+        <result property="portrait_path" column="portrait_path" />
+        <result property="isdelete" column="isdelete" />
+    </resultMap>
+
+
+    <!-- List<UserInfo> getTeachers(@Param("tno") String userID);-->
+    <select id="getTeachers" resultMap="UserMap">
+        select * from tb_teacher
+        <where>
+            <if test="tno !=null and tno!=''">
+                tno = #{tno}
+            </if>
+        </where>
+    </select>
 </mapper>

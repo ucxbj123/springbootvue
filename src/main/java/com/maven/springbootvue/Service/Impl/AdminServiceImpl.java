@@ -1,5 +1,6 @@
 package com.maven.springbootvue.Service.Impl;
 
+import com.maven.springbootvue.Dto.UserInfo;
 import com.maven.springbootvue.Mapper.AdminMapper;
 import com.maven.springbootvue.Pojo.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -69,4 +71,17 @@ public class AdminServiceImpl {
     public int updatePassword(String ano , String newPassword){
         return adminMapper.updatePassword(ano, newPassword);
     }
+
+    /**
+    *@description：根据账号进行查询，若账号为空，则查询全部账号
+    *@param
+    *@return
+    *@Author 谢秉均
+    *@date 2022/10/26--13:28
+    */
+    public List<UserInfo> getAdmins(String ano){
+        List<UserInfo> admins = adminMapper.getAdmins(ano);
+        return admins;
+    }
+
 }

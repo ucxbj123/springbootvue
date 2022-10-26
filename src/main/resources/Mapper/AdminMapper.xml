@@ -30,4 +30,26 @@
         update tb_admin set password = #{password} where ano = #{ano}
     </update>
 
+
+    <resultMap id="UserMap" type="com.maven.springbootvue.Dto.UserInfo">
+        <id property="id" column="id" />
+        <result property="userID" column="ano" />
+        <result property="name" column="name" />
+        <result property="telephone" column="telephone" />
+        <result property="email" column="email" />
+        <result property="address" column="address" />
+        <result property="portrait_path" column="portrait_path" />
+        <result property="isdelete" column="isdelete" />
+    </resultMap>
+
+    <!-- List<Admin> getAdmins(@Param("ano") String userID);-->
+    <select id="getAdmins" resultMap="UserMap">
+        select * from tb_admin
+        <where>
+            <if test="ano !=null and ano!=''">
+                ano = #{ano}
+            </if>
+        </where>
+    </select>
+
 </mapper>

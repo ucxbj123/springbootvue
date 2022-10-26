@@ -1,5 +1,6 @@
 package com.maven.springbootvue.Service.Impl;
 
+import com.maven.springbootvue.Dto.UserInfo;
 import com.maven.springbootvue.Mapper.StudentMapper;
 import com.maven.springbootvue.Pojo.Student;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,18 @@ public class StudentServiceImpl {
     */
     public int updatePassword(String sno , String newPassword){
         return studentMapper.updatePassword(sno, newPassword);
+    }
+
+    /**
+    *@description：根据账号进行查询，若账号为空，则查询全部账号
+    *@param
+    *@return
+    *@Author 谢秉均
+    *@date 2022/10/26--15:46
+    */
+    public List<UserInfo> getStudents(String sno){
+        List<UserInfo> students = studentMapper.getStudents(sno);
+        return students;
     }
 
 

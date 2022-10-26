@@ -1,6 +1,7 @@
 package com.maven.springbootvue.Service.Impl;
 
 
+import com.maven.springbootvue.Dto.UserInfo;
 import com.maven.springbootvue.Mapper.TeacherMapper;
 import com.maven.springbootvue.Pojo.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -69,6 +71,19 @@ public class TeacherServiceImpl {
     */
     public int updatePassword(String tno , String newPassword){
         return teacherMapper.updatePassword(tno, newPassword);
+    }
+
+
+    /**
+    *@description：根据账号进行查询，若账号为空，则查询全部账号
+    *@param
+    *@return
+    *@Author 谢秉均
+    *@date 2022/10/26--15:46
+    */
+    public List<UserInfo> getTeachers(String tno){
+        List<UserInfo> teachers = teacherMapper.getTeachers(tno);
+        return teachers;
     }
 
 }

@@ -34,4 +34,26 @@
         update tb_student set password = #{password} where sno = #{sno}
     </update>
 
+
+    <resultMap id="UserMap" type="com.maven.springbootvue.Dto.UserInfo">
+        <id property="id" column="id" />
+        <result property="userID" column="sno" />
+        <result property="name" column="name" />
+        <result property="telephone" column="telephone" />
+        <result property="email" column="email" />
+        <result property="address" column="address" />
+        <result property="portrait_path" column="portrait_path" />
+        <result property="isdelete" column="isdelete" />
+    </resultMap>
+
+    <!-- List<UserInfo> getStudents(@Param("sno") String userID);-->
+    <select id="getStudents" resultMap="UserMap">
+        select * from tb_student
+        <where>
+            <if test="sno !=null and sno!=''">
+                sno = #{sno}
+            </if>
+        </where>
+    </select>
+
 </mapper>
