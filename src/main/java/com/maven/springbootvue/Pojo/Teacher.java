@@ -21,7 +21,7 @@ public class Teacher implements Serializable {
     private String address; //住址
     private String clazz_name;  //任课班级
     private String portrait_path = "image/run.gif";//存储头像的项目路径
-    private Integer isdelete = 0; //默认未删除
+    private Integer isdelete = 0; //默认未禁用
 
     public Teacher() {
     }

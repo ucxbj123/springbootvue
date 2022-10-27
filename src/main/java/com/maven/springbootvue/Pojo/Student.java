@@ -22,7 +22,7 @@ public class Student implements Serializable {
     private String introducation; //简介
     private String portrait_path = "image/pika.gif";//存储头像的项目路径
     private String clazz_name;//班级名称
-    private Integer isdelete = 0;//默认是未删除的
+    private Integer isdelete = 0;//默认是禁用的
 
     public Student(Integer id, String sno, String name, char gender, String password, String email, String telephone, String address, String introducation, String portrait_path, String clazz_name, Integer isdelete) {
         this.id = id;

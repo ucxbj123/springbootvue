@@ -23,7 +23,7 @@ public class Admin implements Serializable {
     private String telephone; //电话
     private String address; //地址
     private String portrait_path = "image/admin.gif";//存储头像的项目路径
-    private Integer isdelete = 0; //默认未删除
+    private Integer isdelete = 0; //默认未禁用
 
     public Admin() {
     }

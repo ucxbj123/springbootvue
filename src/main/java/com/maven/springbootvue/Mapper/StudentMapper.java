@@ -26,4 +26,7 @@ public interface StudentMapper {
 
     //获取学生信息，根据传入的账号进行查询，若值为null则查询全部
     List<UserInfo> getStudents(@Param("sno") String userID);
+
+    //更改账号的状态（isdelete）
+    Integer updateStatus(@Param("isdelete") Integer status, @Param("sno") String userID);
 }

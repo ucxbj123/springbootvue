@@ -86,4 +86,15 @@ public class TeacherServiceImpl {
         return teachers;
     }
 
+    /**
+    *@description：修改账号状态
+    *@param
+    *@return
+    *@Author 谢秉均
+    *@date 2022/10/27--13:52
+    */
+    public Integer updateStatus(String userID , Integer isdelete){
+        return teacherMapper.updateStatus(isdelete,userID);
+    }
+
 }

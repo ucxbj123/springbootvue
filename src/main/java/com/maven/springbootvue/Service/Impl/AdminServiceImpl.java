@@ -84,4 +84,15 @@ public class AdminServiceImpl {
         return admins;
     }
 
+    /**
+    *@description：修改账号状态
+    *@param
+    *@return
+    *@Author 谢秉均
+    *@date 2022/10/27--13:51
+    */
+    public Integer updateStatus(String userID , Integer isdelete){
+        return adminMapper.updateStatus(isdelete,userID);
+    }
+
 }

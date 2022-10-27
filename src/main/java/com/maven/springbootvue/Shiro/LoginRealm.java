@@ -92,7 +92,8 @@ public class LoginRealm extends AuthorizingRealm {
         //根据账号类型从数据库获取对应的用户密码进行验证
         if (usertype.equals("student")){//学生账号验证
             Student student = studentService.getStudent(userID);//获取student对象
-            if (student == null){
+            //已禁用或者不存在的账号都不允许登录
+            if (student == null || student.getIsdelete() >= 1){
                 logger.warn("用户不存在!");
                 throw new AuthenticationException("用户不存在!");
             }
@@ -108,7 +109,7 @@ public class LoginRealm extends AuthorizingRealm {
         }else if (usertype.equals("teacher")){//教师账号验证
 
             Teacher teacher = teacherService.getTeacher(userID);//获取teacher对象
-            if (teacher == null){
+            if (teacher == null || teacher.getIsdelete() >= 1){
                 logger.warn("用户不存在!");
                 throw new AuthenticationException("用户不存在!");
             }
@@ -124,7 +125,7 @@ public class LoginRealm extends AuthorizingRealm {
         }else if (usertype.equals("admin")){ //管理员账号验证
 
             Admin admin = adminService.getAdmin(userID);//获取admin对象
-            if (admin == null){
+            if (admin == null || admin.getIsdelete() >= 1){
                 logger.warn("用户不存在!");
                 throw new AuthenticationException("用户不存在!");
             }

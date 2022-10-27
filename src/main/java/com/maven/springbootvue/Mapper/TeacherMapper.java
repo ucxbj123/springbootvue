@@ -28,4 +28,7 @@ public interface TeacherMapper {
 
     //获取教师信息，根据传入的账号进行查询，若值为null则查询全部
     List<UserInfo> getTeachers(@Param("tno") String userID);
+
+    //更改账号的状态（isdelete）
+    Integer updateStatus(@Param("isdelete") Integer status, @Param("tno") String userID);
 }

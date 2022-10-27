@@ -6,11 +6,14 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.maven.springbootvue.Dto.BaseResponse;
 import com.maven.springbootvue.Dto.TokenResponseCodeEnum;
 import org.apache.shiro.authc.AuthenticationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLSyntaxErrorException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +29,9 @@ import java.util.Map;
 @RestControllerAdvice
 public class ExceptionController {
 
+    //日志记录器
+    private static final Logger logger = LoggerFactory.getLogger(ExceptionController.class);
+
     //捕获AuthenticationException异常，因为LoginRealm验证token失败统一抛出AuthenticationException异常
 //    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseStatus(HttpStatus.OK)
@@ -37,7 +43,7 @@ public class ExceptionController {
         }else if( e.getMessage().equals(TokenResponseCodeEnum.TOKEN_SIGNATURE_INVALID.getMessage())){
             data = TokenResponseCodeEnum.TOKEN_SIGNATURE_INVALID.getMessage();
         }
-        System.out.println("LoginRealmError"+e.getMessage()+":data"+data);
+        logger.warn("LoginRealmError"+e.getMessage()+" data"+data);
         return new BaseResponse<String>(false,"账号异常",data,50008);
     }
 
@@ -55,5 +61,15 @@ public class ExceptionController {
         map.put("code", 50008);
         map.put("msg","token失效");
         return new BaseResponse<String>(false,"令牌无效",TokenResponseCodeEnum.TOKEN_SIGNATURE_INVALID.getMessage(),50008);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(SQLSyntaxErrorException.class)
+    public BaseResponse<String> SQLError(SQLSyntaxErrorException e){//统一处理sql异常返回
+        String msg = e.getMessage();
+        //日志记录
+        logger.error(e.toString());
+        e.printStackTrace();
+        return new BaseResponse<String>(false,msg,"",20000);
     }
 }

@@ -55,4 +55,9 @@
             </if>
         </where>
     </select>
+
+    <!-- Integer updateStatus(@Param("isdelete") Integer status, @Param("tno") String userID);-->
+    <update id="updateStatus">
+        update tb_teacher set isdelete = #{isdelete} where tno = #{tno}
+    </update>
 </mapper>

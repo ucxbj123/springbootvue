@@ -28,4 +28,7 @@ public interface AdminMapper {
 
     //获取管理员信息，根据传入的账号进行查询，若值为null则查询全部
     List<UserInfo> getAdmins(@Param("ano") String userID);
+
+    //更改管理员账号的状态（isdelete）
+    Integer updateStatus(@Param("isdelete") Integer status, @Param("ano") String userID);
 }

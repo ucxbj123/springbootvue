@@ -1,5 +1,7 @@
 package com.maven.springbootvue;
 
+import com.maven.springbootvue.Dto.UserInfo;
+import com.maven.springbootvue.Dto.UserTypeEnum;
 import com.maven.springbootvue.Util.JWTUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +23,12 @@ class SpringbootvueApplicationTests {
 		}catch (Exception e){
 			e.printStackTrace();
 		}
+	}
+
+	@Test
+	void testEnum(){//测试枚举类型的输出
+		System.out.println(UserTypeEnum.ADMIN);
+		System.out.println(UserTypeEnum.ADMIN.getUsertype());
 	}
 
 }
