@@ -247,37 +247,57 @@ public class LoginController {
         }else {
             switch (headerToken[1]) {
                 case "student":
-                    int studentnumber = studentService.updatePassword(headerToken[0],newpassword);
-                    if (studentnumber > 0){
-                        Result.put("result","修改密码成功");
-                        Result.put("status", "success");
-                        break;
+                    //校验用户输入密码是否正确
+                    String password = studentService.getStudent(headerToken[0]).getPassword();
+                    if (password.equals(oldpassword)){
+                        //修改密码
+                        int studentnumber = studentService.updatePassword(headerToken[0],newpassword);
+                        if (studentnumber > 0){
+                            Result.put("result","修改密码成功");
+                            Result.put("status", "success");
+                            break;
+                        }
+                        Result.put("result","修改密码失败");
+                        Result.put("status", "error");
+                    }else {//原密码输入错误
+                        Result.put("result","原密码错误");
+                        Result.put("status", "error");
                     }
-                    Result.put("result","修改密码失败");
-                    Result.put("status", "error");
                     break;
 
                 case "teacher":
-                    int teachernumber = teacherService.updatePassword(headerToken[0],newpassword);
-                    if (teachernumber > 0){
-                        Result.put("result","修改密码成功");
-                        Result.put("status", "success");
-                        break;
+                    String teacherPassword = teacherService.getTeacher(headerToken[0]).getPassword();
+                    if (teacherPassword.equals(oldpassword)){
+                        int teachernumber = teacherService.updatePassword(headerToken[0],newpassword);
+                        if (teachernumber > 0){
+                            Result.put("result","修改密码成功");
+                            Result.put("status", "success");
+                            break;
+                        }
+                        Result.put("result","修改密码失败");
+                        Result.put("status", "error");
+                    }else {
+                        Result.put("result","原密码错误");
+                        Result.put("status", "error");
                     }
-                    Result.put("result","修改密码失败");
-                    Result.put("status", "error");
                     break;
 
                 case "admin":
 
-                    int adminnumber = adminService.updatePassword(headerToken[0],newpassword);
-                    if (adminnumber > 0){
-                        Result.put("result","修改密码成功");
-                        Result.put("status", "success");
-                        break;
+                    String adminPassword = adminService.getAdmin(headerToken[0]).getPassword();
+                    if (adminPassword.equals(oldpassword)){
+                        int adminnumber = adminService.updatePassword(headerToken[0],newpassword);
+                        if (adminnumber > 0){
+                            Result.put("result","修改密码成功");
+                            Result.put("status", "success");
+                            break;
+                        }
+                        Result.put("result","修改密码失败");
+                        Result.put("status", "error");
+                    }else {
+                        Result.put("result","原密码错误");
+                        Result.put("status", "error");
                     }
-                    Result.put("result","修改密码失败");
-                    Result.put("status", "error");
                     break;
 
                 default:
