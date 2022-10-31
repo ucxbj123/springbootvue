@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!--
+        这个属性可以通过resource或者url来指定属性文件的位置，这两个属性只能使用其中一个来指定，同时出现会报错。
+        resource：指定**classpath**下的属性文件，使用类似com/myproject/generatorConfig.properties这样的属性值。
+        url：可以指定文件系统上的特定位置，例如file:///C:/myfolder/generatorConfig.properties
+    -->
+    <properties resource="jdbc.properties" />
+
+
+    <!--
+    targetRuntime: 执行生成的逆向工程的版本
+    MyBatis3Simple: 生成基本的CRUD（清新简洁版）
+    MyBatis3: 生成带条件的CRUD（奢华尊享版）
+    -->
+    <context id="mysql" targetRuntime="MyBatis3Simple">
+        <!-- 其中suppressDate是去掉生成日期那行注释，suppressAllComments是去掉所有的注解；-->
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+        <!-- 数据库的连接信息 -->
+        <jdbcConnection driverClass="${jdbc.driver}"
+                        connectionURL="${jdbc.url}"
+                        userId="${jdbc.username}"
+                        password="${jdbc.password}">
+        </jdbcConnection>
+        <!-- javaBean的生成策略-->
+        <javaModelGenerator targetPackage="com.maven.springbootvue.Pojo"
+                            targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+        <!-- SQL映射文件的生成策略 -->
+        <sqlMapGenerator targetPackage="Mapper"
+                         targetProject=".\src\main\resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+        <!-- Mapper接口的生成策略 -->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="com.maven.springbootvue.Mapper" targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+        <!-- 逆向分析的表 -->
+        <!-- tableName设置为*号，可以对应所有表，此时不写domainObjectName -->
+        <!-- domainObjectName属性指定生成出来的实体类的类名 -->
+        <table tableName="tb_grade" domainObjectName="Grade"/>
+        <table tableName="tb_clazz" domainObjectName="Clazz"/>
+    </context>
+</generatorConfiguration>

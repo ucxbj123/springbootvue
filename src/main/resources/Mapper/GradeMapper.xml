@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maven.springbootvue.Mapper.GradeMapper">
+  <resultMap id="BaseResultMap" type="com.maven.springbootvue.Pojo.Grade">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="name" jdbcType="VARCHAR" property="name" />
+    <result column="manager" jdbcType="VARCHAR" property="manager" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="introducation" jdbcType="VARCHAR" property="introducation" />
+    <result column="isdelete"  property="isdelete" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    delete from tb_grade
+    where id = #{id,jdbcType=INTEGER}
+      and name = #{name,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.maven.springbootvue.Pojo.Grade">
+    insert into tb_grade (id, name, manager, 
+      email, telephone, introducation, isdelete, gno
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{manager,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, #{introducation,jdbcType=VARCHAR}, #{isdelete}, #{gno}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.maven.springbootvue.Pojo.Grade">
+    update tb_grade
+    set manager = #{manager,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      introducation = #{introducation,jdbcType=VARCHAR},
+      isdelete = #{isdelete},
+      gno = #{gno}
+    where id = #{id,jdbcType=INTEGER}
+      and name = #{name,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    select *
+    from tb_grade
+    where id = #{id,jdbcType=INTEGER}
+      and name = #{name,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select *
+    from tb_grade
+  </select>
+
+  <!-- List<Grade> getGrade(@Param("gno") String gno, @Param("name") String name);-->
+  <select id="getGrade" resultType="grade">
+    select * from (select * from tb_grade where isdelete &lt; 1 or isdelete is null) as tb_grade
+    <where>
+      <if test="gno !=null and gno!=''">
+        gno = #{gno}
+      </if>
+      <if test="name !=null and name!=''">
+        and name = #{name}
+      </if>
+    </where>
+  </select>
+</mapper>
