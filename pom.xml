@@ -39,6 +39,17 @@
 			<artifactId>mybatis-plus-boot-starter</artifactId>
 			<version>3.5.1</version>
 		</dependency>
+		<!-- springboot集成mybatis（内存）分页插件
+			 springboot2.6+版本默认禁止循环依赖，分页插件需要使用1.4.x以上；若使用低版本，则要在启动类添加
+			 @SpringBootApplication(exclude = {PageHelperAutoConfiguration.class})
+		-->
+		<!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter -->
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper-spring-boot-starter</artifactId>
+			<version>1.4.2</version>
+		</dependency>
+
 		<!-- Mybatis EHCache整合包 -->
 		<dependency>
 			<groupId>org.mybatis.caches</groupId>

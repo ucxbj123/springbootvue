@@ -45,7 +45,7 @@
     from tb_grade
   </select>
 
-  <!-- List<Grade> getGrade(@Param("gno") String gno, @Param("name") String name);-->
+  <!-- List<Grade> getGrade(@Param("gno") String gno, @Param("name") String name); 过滤掉标志已删除的信息-->
   <select id="getGrade" resultType="grade">
     select * from (select * from tb_grade where isdelete &lt; 1 or isdelete is null) as tb_grade
     <where>

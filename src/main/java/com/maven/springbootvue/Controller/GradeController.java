@@ -1,6 +1,7 @@
 package com.maven.springbootvue.Controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import com.maven.springbootvue.Dto.BaseResponse;
 import com.maven.springbootvue.Pojo.Grade;
 import com.maven.springbootvue.Service.Impl.GradeServiceImpl;
@@ -41,11 +42,12 @@ public class GradeController {
         //年级名称、年级编号
         String gno = msg.getString("gno");
         String name = msg.getString("name");
-        List<Grade> list = gradeService.getPageGrade(gno,name,pagesize,currentPage);
+        PageInfo<Grade> pageInfo = gradeService.getPageGrade(gno,name,pagesize,currentPage);
+        logger.info("pageInfo:"+pageInfo);
         //存储返回的结果，线程安全的map集合
         Map<String,Object> map = new LinkedHashMap<>();
-        map.put("grades",list);
-        map.put("total",100);
+        map.put("grades",pageInfo.getList());
+        map.put("total",pageInfo.getTotal());
         return new BaseResponse(true,"年级信息",map,20000);
     }
 }

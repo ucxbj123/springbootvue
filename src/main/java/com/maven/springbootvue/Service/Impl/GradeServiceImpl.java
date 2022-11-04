@@ -1,5 +1,7 @@
 package com.maven.springbootvue.Service.Impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.maven.springbootvue.Mapper.GradeMapper;
 import com.maven.springbootvue.Pojo.Grade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +32,10 @@ public class GradeServiceImpl {
     *@Author 谢秉均
     *@date 2022/10/31--16:53
     */
-    public List<Grade> getPageGrade(String gno, String name,Integer pagesize, Integer currentPage){
+    public PageInfo<Grade> getPageGrade(String gno, String name, Integer pagesize, Integer currentPage){
+        PageHelper.startPage(currentPage,pagesize);
         List<Grade> list = gradeMapper.getGrade(gno,name);
-        return list;
+        PageInfo<Grade> pageInfo = new PageInfo<>(list);
+        return pageInfo;
     }
 }
