@@ -57,4 +57,48 @@
       </if>
     </where>
   </select>
+
+  <!-- List<Grade> getGradeAll(@Param("gno") String gno, @Param("name") String name);-->
+  <select id="getGradeAll" resultType="grade">
+    select * from  tb_grade
+    <where>
+      <if test="gno !=null and gno!=''">
+        gno = #{gno}
+      </if>
+      <if test="name !=null and name!=''">
+        and name = #{name}
+      </if>
+    </where>
+  </select>
+
+  <!-- Integer updateByGnoAndName(Grade grade);-->
+  <update id="updateByGnoAndName" parameterType="com.maven.springbootvue.Pojo.Grade">
+    update tb_grade
+    set manager = #{manager,jdbcType=VARCHAR},
+    email = #{email,jdbcType=VARCHAR},
+    telephone = #{telephone,jdbcType=VARCHAR},
+    introducation = #{introducation,jdbcType=VARCHAR},
+    isdelete = #{isdelete}
+    where gno = #{gno,jdbcType=VARCHAR}
+    and name = #{name,jdbcType=VARCHAR}
+  </update>
+
+  <!-- Integer updateByGno(Grade grade);-->
+  <update id="updateByGno" parameterType="com.maven.springbootvue.Pojo.Grade">
+    update tb_grade
+    set manager = #{manager,jdbcType=VARCHAR},
+    email = #{email,jdbcType=VARCHAR},
+    telephone = #{telephone,jdbcType=VARCHAR},
+    introducation = #{introducation,jdbcType=VARCHAR},
+    isdelete = #{isdelete}
+    where gno = #{gno,jdbcType=VARCHAR}
+  </update>
+
+  <!-- Integer deleteGrade(Grade grade);-->
+  <update id="deleteGrade" parameterType="com.maven.springbootvue.Pojo.Grade">
+    update tb_grade
+    set isdelete = #{isdelete}
+    where gno = #{gno,jdbcType=VARCHAR}
+    and name = #{name,jdbcType=VARCHAR}
+  </update>
 </mapper>
