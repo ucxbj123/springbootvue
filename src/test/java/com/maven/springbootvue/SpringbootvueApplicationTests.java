@@ -1,6 +1,5 @@
 package com.maven.springbootvue;
 
-import com.maven.springbootvue.Dto.UserInfo;
 import com.maven.springbootvue.Dto.UserTypeEnum;
 import com.maven.springbootvue.Util.JWTUtil;
 import org.junit.jupiter.api.Test;
