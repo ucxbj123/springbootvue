@@ -4,8 +4,8 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.maven.springbootvue.Dto.BaseResponse;
-import com.maven.springbootvue.Pojo.Grade;
-import com.maven.springbootvue.Service.Impl.GradeServiceImpl;
+import com.maven.springbootvue.Pojo.Clazz;
+import com.maven.springbootvue.Service.Impl.ClazzServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -26,25 +25,26 @@ import java.util.Map;
 
 /**
  * @author 谢秉均
- * @description 年级功能模块
- * @date 2022/10/31--16:57
+ * @description
+ * @date 2022/11/17--15:06
  */
 @RestController
-@RequestMapping("/grade")
-public class GradeController {
+@RequestMapping("/clazz")
+public class ClazzController {
 
     //日志记录器
-    private static final Logger logger= LoggerFactory.getLogger(GradeController.class);
+    private static final Logger logger= LoggerFactory.getLogger(ClazzController.class);
 
     @Autowired
-    private GradeServiceImpl gradeService;
+    ClazzServiceImpl clazzService;
+
 
     /**
-    *@description：获取年级的分页数据
+    *@description：获取班级的分页数据
     *@param  msg
     *@return
     *@Author 谢秉均
-    *@date 2022/11/8--13:51
+    *@date 2022/11/17--15:20
     */
     @RequestMapping(value = "/getPage",method = RequestMethod.POST)
     public BaseResponse<Map> getPage(@RequestBody JSONObject msg){
@@ -53,29 +53,28 @@ public class GradeController {
         Integer pagesize = Integer.valueOf(msg.getString("pagesize"));
         //当前页
         Integer currentPage= Integer.valueOf(msg.getString("currentPage"));
-        //年级名称、年级编号
-        String gno = msg.getString("gno");
+        //班级名称、班级编号
+        String cno = msg.getString("cno");
         String name = msg.getString("name");
-        PageInfo<Grade> pageInfo = gradeService.getPageGrade(gno,name,pagesize,currentPage);
+        PageInfo<Clazz> pageInfo = clazzService.getPageClazz(cno,name,pagesize,currentPage);
         logger.info("pageInfo:"+pageInfo);
         //存储返回的结果，线程安全的map集合
         Map<String,Object> map = new LinkedHashMap<>();
-        map.put("grades",pageInfo.getList());
+        map.put("clazz",pageInfo.getList());
         map.put("total",pageInfo.getTotal());
-        return new BaseResponse<Map>(true,"年级信息",map,20000);
+        return new BaseResponse<Map>(true,"班级级信息",map,20000);
     }
 
     /**
-    *@description：添加年级信息
-    *@param  grade 年级
+    *@description： 添加班级信息
+    *@param  clazz 班级信息
     *@return
     *@Author 谢秉均
-    *@date 2022/11/8--13:50
+    *@date 2022/11/18--9:59
     */
-    @RequestMapping(value = "insertGrade",method = RequestMethod.POST)
-    public BaseResponse<String> insertGrade (@RequestBody Grade grade){
-        System.out.println(grade);
-        Integer res = gradeService.InsertGrade(grade);
+    @RequestMapping(value = "insertClazz",method = RequestMethod.POST)
+    public BaseResponse<String> insertClazz (@RequestBody Clazz clazz){
+        Integer res = clazzService.InsertClazz(clazz);
         //结果描述
         String msg = null;
         Boolean result = null;
@@ -83,7 +82,7 @@ public class GradeController {
             msg = "添加成功";
             result = true;
         }else if (res == -1){
-            msg = "年级已存在";
+            msg = "班级已存在";
             result = false;
         }else if (res == 0){
             msg = "添加失败";
@@ -93,15 +92,15 @@ public class GradeController {
     }
 
     /**
-    *@description：根据年级编号与名称修改对应的年级信息
-    *@param  grade
+    *@description：更新班级信息
+    *@param
     *@return
     *@Author 谢秉均
-    *@date 2022/11/8--15:34
+    *@date 2022/11/18--10:44
     */
-    @RequestMapping(value = "updateGrade",method = RequestMethod.POST)
-    public BaseResponse<String> updateGrade(@RequestBody Grade grade){
-        Integer res = gradeService.updateGrade(grade);
+    @RequestMapping(value = "updateClazz",method = RequestMethod.POST)
+    public BaseResponse<String> updateClazz(@RequestBody Clazz clazz){
+        Integer res = clazzService.updateClazz(clazz);
         Boolean result = null;
         String msg = null;
         if (res > 0){
@@ -115,31 +114,31 @@ public class GradeController {
     }
 
     /**
-    *@description：根据年级编号和名称删除年级信息，实际是更改isdelete = 1
-    *@param  grade
+    *@description：删除班级信息，实际是更改isdelete状态为1
+    *@param clazz
     *@return
     *@Author 谢秉均
-    *@date 2022/11/8--15:36
+    *@date 2022/11/18--11:15
     */
-    @RequestMapping(value = "/deleteGrade",method = RequestMethod.POST)
-    public BaseResponse<String> deleteGrade(@RequestBody Grade grade){
-        //设置该年级信息为删除状态，进行后续状态修改操作
-        grade.setIsdelete(1);
-        Map<String,Object> map = gradeService.deleteGrade(grade);
+    @RequestMapping(value = "/deleteClazz",method = RequestMethod.POST)
+    public BaseResponse<String> deleteClazz(@RequestBody Clazz clazz){
+        //设置该班级信息为删除状态，进行后续状态修改操作
+        clazz.setIsdelete(1);
+        Map<String,Object> map = clazzService.deleteClazz(clazz);
         return new BaseResponse<String>((Boolean) map.get("success"),(String) map.get("msg"),"",20000);
     }
 
     /**
-    *@description：将数据导出为excel文件，导出年级信息
+    *@description：将数据导出为excel文件，导出班级信息
     *@param  msg List的JSON数据
     *@return
     *@Author 谢秉均
-    *@date 2022/11/15--16:10
+    *@date 2022/11/18--11:25
     */
     @RequestMapping("/download")
-    public void exportExcel(@RequestBody List<Grade> msg, HttpServletResponse response) throws IOException {
+    public void exportExcel(@RequestBody List<Clazz> msg, HttpServletResponse response) throws IOException {
         String nowtime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        String fileName = URLEncoder.encode("年级信息-"+nowtime, "UTF-8");
+        String fileName = URLEncoder.encode("班级信息-"+nowtime, "UTF-8");
         /**setContentType是用来区分数据类型的
          * {".xls", "application/vnd.ms-excel" },
          * {".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},
@@ -153,21 +152,6 @@ public class GradeController {
         //设置不缓存
         response.addHeader("Pargam", "no-cache");
         response.addHeader("Cache-Control", "no-cache");
-        EasyExcel.write(response.getOutputStream(), Grade.class).sheet("年级信息").doWrite(msg);
-    }
-
-    /**
-    *@description：根据年级名称或者年级编码查年级信息，若都为空则查询全部年级信息
-    *@param  msg
-    *@return
-    *@Author 谢秉均
-    *@date 2022/11/17--16:35
-    */
-    @RequestMapping("/getGrades")
-    public BaseResponse<List<Grade>> getGrades(@RequestBody JSONObject msg){
-        String gno = msg.getString("gno");
-        String name = msg.getString("name");
-        List<Grade> list = gradeService.getGrades(gno,name);
-        return new BaseResponse<List<Grade>>(true,"班级信息",list,20000);
+        EasyExcel.write(response.getOutputStream(), Clazz.class).sheet("班级信息").doWrite(msg);
     }
 }

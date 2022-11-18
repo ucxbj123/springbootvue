@@ -90,4 +90,14 @@ public class GradeServiceImpl {
         }
         return map;
     }
+
+    /**
+     * 根据年级编号和名称删除年级信息，不包括isdelete = 1
+     * @param gno
+     * @param name
+     */
+    public List<Grade> getGrades(String gno , String name){
+        List<Grade> list = gradeMapper.getGrade(gno,name);
+        return  list;
+    }
 }

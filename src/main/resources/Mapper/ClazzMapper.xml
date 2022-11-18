@@ -9,7 +9,8 @@
     <result column="coordinator" jdbcType="VARCHAR" property="coordinator" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="telephone" jdbcType="VARCHAR" property="telephone" />
-    <result column="grade_name" jdbcType="VARCHAR" property="gradeName" />
+    <result column="gno" jdbcType="VARCHAR" property="gno" />
+    <result column="grade_name" jdbcType="VARCHAR" property="grade_name" />
     <result column="isdelete" jdbcType="BIT" property="isdelete" />
     <result column="cno" jdbcType="VARCHAR" property="cno" />
   </resultMap>
@@ -20,11 +21,11 @@
   <insert id="insert" parameterType="com.maven.springbootvue.Pojo.Clazz">
     insert into tb_clazz (id, name, number, 
       introducation, coordinator, email, 
-      telephone, grade_name, isdelete, 
+      telephone, gno, isdelete, grade_name,
       cno)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, 
       #{introducation,jdbcType=VARCHAR}, #{coordinator,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{telephone,jdbcType=VARCHAR}, #{gradeName,jdbcType=VARCHAR}, #{isdelete,jdbcType=BIT}, 
+      #{telephone,jdbcType=VARCHAR}, #{gno,jdbcType=VARCHAR}, #{isdelete,jdbcType=BIT}, #{grade_name,jdbcType=VARCHAR},
       #{cno,jdbcType=VARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.maven.springbootvue.Pojo.Clazz">
@@ -35,20 +36,90 @@
       coordinator = #{coordinator,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       telephone = #{telephone,jdbcType=VARCHAR},
-      grade_name = #{gradeName,jdbcType=VARCHAR},
+      gno = #{gno,jdbcType=VARCHAR},
+      grade_name = #{grade_name,jdbcType=VARCHAR},
       isdelete = #{isdelete,jdbcType=BIT},
       cno = #{cno,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, name, number, introducation, coordinator, email, telephone, grade_name, 
-    isdelete, cno
+    select *
     from tb_clazz
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, name, number, introducation, coordinator, email, telephone, grade_name,
-    isdelete, cno
+    select *
     from tb_clazz
   </select>
+
+  <!-- List<Clazz> getClazz(@Param("cno") String cno, @Param("name") String name);-->
+  <select id="getClazz" resultMap="BaseResultMap">
+    select * from (select * from tb_clazz where isdelete &lt; 1 or isdelete is null) as tb_clazz
+    <where>
+      <if test="cno !=null and cno!=''">
+        cno = #{cno}
+      </if>
+      <if test="name !=null and name!=''">
+        and name = #{name}
+      </if>
+    </where>
+  </select>
+
+  <!-- List<Clazz> getClazzAll(@Param("cno") String cno, @Param("name") String name);-->
+  <select id="getClazzAll" resultMap="BaseResultMap">
+    select * from tb_clazz
+    <where>
+      <if test="cno !=null and cno!=''">
+        cno = #{cno}
+      </if>
+      <if test="name !=null and name!=''">
+        and name = #{name}
+      </if>
+    </where>
+  </select>
+
+  <!-- Integer updateByCno(Clazz clazz);-->
+  <update id="updateByCno" parameterType="com.maven.springbootvue.Pojo.Clazz">
+    update tb_clazz
+    set name = #{name,jdbcType=VARCHAR},
+    number = #{number,jdbcType=INTEGER},
+    introducation = #{introducation,jdbcType=VARCHAR},
+    coordinator = #{coordinator,jdbcType=VARCHAR},
+    email = #{email,jdbcType=VARCHAR},
+    telephone = #{telephone,jdbcType=VARCHAR},
+    gno = #{gno,jdbcType=VARCHAR},
+    grade_name = #{grade_name,jdbcType=VARCHAR},
+    isdelete = #{isdelete,jdbcType=BIT}
+    where cno = #{cno,jdbcType=VARCHAR}
+  </update>
+
+  <!-- Integer updateByCnoOrName(Clazz clazz);-->
+  <update id="updateByCnoOrName" parameterType="com.maven.springbootvue.Pojo.Clazz">
+    update tb_clazz
+    set number = #{number,jdbcType=INTEGER},
+    introducation = #{introducation,jdbcType=VARCHAR},
+    coordinator = #{coordinator,jdbcType=VARCHAR},
+    email = #{email,jdbcType=VARCHAR},
+    telephone = #{telephone,jdbcType=VARCHAR},
+    gno = #{gno,jdbcType=VARCHAR},
+    grade_name = #{grade_name,jdbcType=VARCHAR},
+    isdelete = #{isdelete,jdbcType=BIT}
+    <where>
+      <if test="cno !=null and cno!=''">
+        cno = #{cno,jdbcType=VARCHAR}
+      </if>
+      <if test="name !=null and name!=''">
+        and name = #{name,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </update>
+
+  <!-- Integer deleteClazz(Clazz clazz);-->
+  <update id="deleteClazz" parameterType="com.maven.springbootvue.Pojo.Clazz">
+    update tb_clazz
+    set isdelete = #{isdelete}
+    where cno = #{cno,jdbcType=VARCHAR}
+    and name = #{name,jdbcType=VARCHAR}
+  </update>
+
 </mapper>
