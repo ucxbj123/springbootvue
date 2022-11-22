@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.maven.springbootvue.Mapper.GradeMapper">
+
+  <!-- 开启二级缓存-->
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+
   <resultMap id="BaseResultMap" type="com.maven.springbootvue.Pojo.Grade">
     <id column="id" jdbcType="INTEGER" property="id" />
     <id column="name" jdbcType="VARCHAR" property="name" />

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 谢秉均
@@ -109,6 +110,61 @@ public class SystemController {
                 teacherService.updateStatus(userInfo.getUserID(),userInfo.getIsdelete());
         }
         return new BaseResponse<String>(true,"更改成功","",20000);
+    }
+
+    /**
+    *@description： 添加用户
+    *@param
+    *@return
+    *@Author 谢秉均
+    *@date 2022/11/22--14:49
+    */
+    @RequestMapping(value = "/insertUser",method = RequestMethod.POST)
+    public BaseResponse<String> insertUser(@RequestBody UserInfo userInfo){
+        if(userInfo == null){//处理前端参数为空情况
+            return new BaseResponse<String>(false,"添加用户失败","",20000);
+        }
+        //根据账号类型进行对应用户账号的添加
+        Map<String,Object> map = null;
+        switch (userInfo.getUsertype()){
+            case "admin":
+                map = adminService.insertAdminOne(userInfo);
+                break;
+            case "student":
+                map = studentService.insertStudentOne(userInfo);
+                break;
+            case "teacher":
+                map = teacherService.insertTeacherOne(userInfo);
+        }
+        return new BaseResponse<String>((Boolean) map.get("success"),(String) map.get("msg"),"",20000);
+    }
+
+
+    /**
+    *@description：删除用户
+    *@param
+    *@return
+    *@Author 谢秉均
+    *@date 2022/11/22--17:51
+    */
+    @RequestMapping(value = "/deletetUser",method = RequestMethod.POST)
+    public BaseResponse<String> deletetUser(@RequestBody UserInfo userInfo){
+        if(userInfo == null){//处理前端参数为空情况
+            return new BaseResponse<String>(false,"删除用户失败","",20000);
+        }
+        //根据账号类型进行对应用户账号的删除
+        Map<String,Object> map = null;
+        switch (userInfo.getUsertype()){
+            case "admin":
+                map = adminService.deleteAdminOne(userInfo);
+                break;
+            case "student":
+                map = studentService.deleteStudentOne(userInfo);
+                break;
+            case "teacher":
+                map = teacherService.deleteTeacherOne(userInfo);
+        }
+        return new BaseResponse<String>((Boolean) map.get("success"),(String) map.get("msg"),"",20000);
     }
 
 }

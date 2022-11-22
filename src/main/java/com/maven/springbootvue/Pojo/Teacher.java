@@ -1,5 +1,9 @@
 package com.maven.springbootvue.Pojo;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import org.springframework.stereotype.Component;
+
 import java.io.Serializable;
 
 /**
@@ -9,6 +13,8 @@ import java.io.Serializable;
 *@Author: 谢秉均
 *@date: 2022/10/18--15:06
 */
+@Component
+@Data
 public class Teacher implements Serializable {
 
     private Integer id; //ID
@@ -128,20 +134,4 @@ public class Teacher implements Serializable {
         this.isdelete = isdelete;
     }
 
-    @Override
-    public String toString() {
-        return "Teacher{" +
-                "id=" + id +
-                ", tno='" + tno + '\'' +
-                ", name='" + name + '\'' +
-                ", gender=" + gender +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", telephone='" + telephone + '\'' +
-                ", address='" + address + '\'' +
-                ", clazz_name='" + clazz_name + '\'' +
-                ", portrait_path='" + portrait_path + '\'' +
-                ", isdelete=" + isdelete +
-                '}';
-    }
 }

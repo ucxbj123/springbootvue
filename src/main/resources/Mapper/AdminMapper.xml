@@ -57,4 +57,16 @@
         update tb_admin set isdelete = #{isdelete} where ano = #{ano}
     </update>
 
+    <!-- Integer insertAdminOne(UserInfo userInfo);-->
+    <insert id="insertAdminOne">
+        insert into tb_admin (id, ano, name, gender, password, telephone, email, address, portrait_path, isdelete)
+        values
+        (#{id}, #{userID}, #{name}, #{gender}, #{password}, #{telephone}, #{email}, #{address}, #{portrait_path}, #{isdelete} )
+    </insert>
+
+    <!-- Integer deleteAdminOne(UserInfo userInfo);-->
+    <delete id="deleteAdminOne">
+        delete from tb_admin
+        where ano = #{userID}
+    </delete>
 </mapper>

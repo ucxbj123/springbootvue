@@ -31,4 +31,10 @@ public interface TeacherMapper {
 
     //更改账号的状态（isdelete）
     Integer updateStatus(@Param("isdelete") Integer status, @Param("tno") String userID);
+
+    //添加教师用户
+    Integer insertTeacherOne(UserInfo userInfo);
+
+    //删除教师用户
+    Integer deleteTeacherOne(UserInfo userInfo);
 }

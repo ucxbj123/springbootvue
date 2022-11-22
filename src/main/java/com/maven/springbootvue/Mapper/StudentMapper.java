@@ -29,4 +29,10 @@ public interface StudentMapper {
 
     //更改账号的状态（isdelete）
     Integer updateStatus(@Param("isdelete") Integer status, @Param("sno") String userID);
+
+    //添加学生用户
+    Integer insertStudentOne(UserInfo userInfo);
+
+    //删除学生用户
+    Integer deleteStudentOne(UserInfo userInfo);
 }

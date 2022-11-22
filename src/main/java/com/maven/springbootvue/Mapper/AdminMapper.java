@@ -31,4 +31,10 @@ public interface AdminMapper {
 
     //更改管理员账号的状态（isdelete）
     Integer updateStatus(@Param("isdelete") Integer status, @Param("ano") String userID);
+
+    //添加管理员用户
+    Integer insertAdminOne(UserInfo userInfo);
+
+    //删除管理员用户
+    Integer deleteAdminOne(UserInfo userInfo);
 }

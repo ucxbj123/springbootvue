@@ -60,4 +60,16 @@
     <update id="updateStatus">
         update tb_teacher set isdelete = #{isdelete} where tno = #{tno}
     </update>
+
+    <!-- Integer insertTeacherOne(UserInfo userInfo);-->
+    <insert id="insertTeacherOne">
+        insert into tb_teacher (id, tno, name, gender, password, telephone, email, address, portrait_path, isdelete)
+        values
+        (#{id}, #{userID}, #{name}, #{gender}, #{password}, #{telephone}, #{email}, #{address}, #{portrait_path}, #{isdelete} )
+    </insert>
+
+    <!-- Integer deleteTeacherOne(UserInfo userInfo);-->
+    <delete id="deleteTeacherOne">
+        delete from tb_teacher where tno = #{userID}
+    </delete>
 </mapper>

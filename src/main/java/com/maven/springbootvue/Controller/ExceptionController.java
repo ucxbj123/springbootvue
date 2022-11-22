@@ -13,10 +13,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLException;
 import java.sql.SQLSyntaxErrorException;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author 谢秉均
  * @date 2022/10/21--23:53
@@ -50,26 +48,22 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(TokenExpiredException.class)
     public BaseResponse<String> JWTTokenError(){
-        Map<String, Object> map = new HashMap<>();
         return new BaseResponse<String>(false,"令牌无效", TokenResponseCodeEnum.TOKEN_EXPIRED.getMessage(),50008);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(SignatureVerificationException.class)
     public BaseResponse<String> JWTTokenverifyError(){
-        Map<String, Object> map = new HashMap<>();
-        map.put("code", 50008);
-        map.put("msg","token失效");
         return new BaseResponse<String>(false,"令牌无效",TokenResponseCodeEnum.TOKEN_SIGNATURE_INVALID.getMessage(),50008);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @ExceptionHandler(SQLSyntaxErrorException.class)
-    public BaseResponse<String> SQLError(SQLSyntaxErrorException e){//统一处理sql异常返回
+    @ExceptionHandler(SQLException.class)
+    public BaseResponse<String> SQLError(SQLException e){//统一处理sql异常返回
         String msg = e.getMessage();
         //日志记录
         logger.error(e.toString());
         e.printStackTrace();
-        return new BaseResponse<String>(false,msg,"",20000);
+        return new BaseResponse<String>(false,msg,msg,20000);
     }
 }

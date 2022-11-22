@@ -36,6 +36,8 @@ public class UserInfo implements Serializable {
 
     private String portrait_path;
 
+    private String password;
+
     public UserInfo(String userID, String name, String gender, String address, String email, String telephone, Integer isdelete) {
         this.userID = userID;
         this.name = name;

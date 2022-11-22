@@ -1,5 +1,8 @@
 package com.maven.springbootvue.Pojo;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -9,6 +12,8 @@ import java.io.Serializable;
  * @date 2022/10/17--23:18
  */
 @Component
+@Data
+@AllArgsConstructor
 public class Student implements Serializable {
 
     private Integer id; //ID
@@ -22,6 +27,7 @@ public class Student implements Serializable {
     private String introducation; //简介
     private String portrait_path = "image/pika.gif";//存储头像的项目路径
     private String clazz_name;//班级名称
+    private String cno; //班级编号
     private Integer isdelete = 0;//默认是禁用的
 
     public Student(Integer id, String sno, String name, char gender, String password, String email, String telephone, String address, String introducation, String portrait_path, String clazz_name, Integer isdelete) {
@@ -40,24 +46,6 @@ public class Student implements Serializable {
     }
 
     public Student() {
-    }
-
-    @Override
-    public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", sno='" + sno + '\'' +
-                ", name='" + name + '\'' +
-                ", gender=" + gender +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", telephone='" + telephone + '\'' +
-                ", address='" + address + '\'' +
-                ", introducation='" + introducation + '\'' +
-                ", portrait_path='" + portrait_path + '\'' +
-                ", clazz_name='" + clazz_name + '\'' +
-                ", isdelete=" + isdelete +
-                '}';
     }
 
     public Integer getIsdelete() {

@@ -81,5 +81,45 @@ public class StudentServiceImpl {
         return studentMapper.updateStatus(isdelete,userID);
     }
 
+    /**
+    *@description：添加学生账号
+    *@param
+    *@return
+    *@Author 谢秉均
+    *@date 2022/11/22--17:17
+    */
+    public Map<String,Object> insertStudentOne(UserInfo userInfo){
+        Map<String, Object> map =new HashMap<>();
+        Integer res = studentMapper.insertStudentOne(userInfo);
+        if(res == 1){//影响的记录数为1则添加单条记录成功
+            map.put("success",true);
+            map.put("msg","添加成功");
+        }else {
+            map.put("success",false);
+            map.put("msg","添加失败");
+        }
+        return map;
+    }
+
+    /**
+    *@description：删除学生账号
+    *@param
+    *@return
+    *@Author 谢秉均
+    *@date 2022/11/22--17:57
+    */
+    public Map<String,Object> deleteStudentOne(UserInfo userInfo){
+        Map<String, Object> map =new HashMap<>();
+        Integer res = studentMapper.deleteStudentOne(userInfo);
+        if(res == 1){//影响的记录数为1则删除单条记录成功
+            map.put("success",true);
+            map.put("msg","删除成功");
+        }else {
+            map.put("success",false);
+            map.put("msg","删除失败");
+        }
+        return map;
+    }
+
 
 }
