@@ -35,4 +35,8 @@ public interface StudentMapper {
 
     //删除学生用户
     Integer deleteStudentOne(UserInfo userInfo);
+
+    //更新用户信息
+    Integer updateStudentOne(UserInfo userInfo);
+
 }

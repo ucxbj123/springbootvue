@@ -69,4 +69,30 @@
         delete from tb_admin
         where ano = #{userID}
     </delete>
+
+    <!-- 更新用户信息 Integer updateAdminOne(UserInfo userInfo);-->
+    <update id="updateAdminOne">
+        update tb_admin
+        <trim prefix="set" suffixOverrides=",">
+            <if test="gender !=null and gender !=''">
+                gender = #{gender},
+            </if>
+            <if test="password !=null and password !=''">
+                password = #{password},
+            </if>
+            <if test="telephone !=null and telephone !=''">
+                telephone = #{telephone},
+            </if>
+            <if test="name !=null and name !=''">
+                name = #{name},
+            </if>
+            <if test="email !=null and email !=''">
+                email = #{email},
+            </if>
+            <if test="address !=null and address !=''">
+                address = #{address}
+            </if>
+        </trim>
+        where ano = #{userID}
+    </update>
 </mapper>

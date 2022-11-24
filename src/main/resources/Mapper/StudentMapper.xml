@@ -73,4 +73,30 @@
         delete from tb_student where sno = #{userID}
     </delete>
 
+    <!-- Integer updateStudentOne(UserInfo userInfo);-->
+    <update id="updateStudentOne">
+        update tb_student
+        <trim prefix="set" suffixOverrides=",">
+            <if test="gender !=null and gender !=''">
+                gender = #{gender},
+            </if>
+            <if test="password !=null and password !=''">
+                password = #{password},
+            </if>
+            <if test="telephone !=null and telephone !=''">
+                telephone = #{telephone},
+            </if>
+            <if test="name !=null and name !=''">
+                name = #{name},
+            </if>
+            <if test="email !=null and email !=''">
+                email = #{email},
+            </if>
+            <if test="address !=null and address !=''">
+                address = #{address}
+            </if>
+        </trim>
+        where sno = #{userID}
+    </update>
+
 </mapper>

@@ -121,5 +121,25 @@ public class StudentServiceImpl {
         return map;
     }
 
+    /**
+    *@description：修改单个用户信息
+    *@param
+    *@return
+    *@Author 谢秉均
+    *@date 2022/11/24--11:19
+    */
+    public Map<String,Object> updateStudentOne(UserInfo userInfo){
+        Map<String, Object> map =new HashMap<>();
+        Integer res = studentMapper.updateStudentOne(userInfo);
+        if(res == 1){//影响的记录数为1则修改单条记录成功
+            map.put("success",true);
+            map.put("msg","更新信息成功");
+        }else {
+            map.put("success",false);
+            map.put("msg","更新信息失败");
+        }
+        return map;
+    }
+
 
 }

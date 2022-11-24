@@ -74,7 +74,11 @@ public class GradeController {
     */
     @RequestMapping(value = "insertGrade",method = RequestMethod.POST)
     public BaseResponse<String> insertGrade (@RequestBody Grade grade){
-        System.out.println(grade);
+        logger.info("insert:"+grade);
+        //新添加的年级，id自增、默认未删除
+        grade.setIsdelete(0);
+        grade.setId(null);
+
         Integer res = gradeService.InsertGrade(grade);
         //结果描述
         String msg = null;

@@ -74,6 +74,10 @@ public class ClazzController {
     */
     @RequestMapping(value = "insertClazz",method = RequestMethod.POST)
     public BaseResponse<String> insertClazz (@RequestBody Clazz clazz){
+        //新添加的班级，id自增、默认未删除、班级人数为0
+        clazz.setId(null);
+        clazz.setIsdelete(0);
+        clazz.setNumber(0);
         Integer res = clazzService.InsertClazz(clazz);
         //结果描述
         String msg = null;

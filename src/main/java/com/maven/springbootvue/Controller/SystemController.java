@@ -124,6 +124,10 @@ public class SystemController {
         if(userInfo == null){//处理前端参数为空情况
             return new BaseResponse<String>(false,"添加用户失败","",20000);
         }
+        //新添加的账号ID自增、默认是启用状态
+        userInfo.setId(null);
+        userInfo.setIsdelete(0);
+
         //根据账号类型进行对应用户账号的添加
         Map<String,Object> map = null;
         switch (userInfo.getUsertype()){
@@ -166,5 +170,27 @@ public class SystemController {
         }
         return new BaseResponse<String>((Boolean) map.get("success"),(String) map.get("msg"),"",20000);
     }
+
+    @RequestMapping(value = "/updatetUser",method = RequestMethod.POST)
+    public BaseResponse<String> updatetUser(@RequestBody UserInfo userInfo){
+        if(userInfo == null){//处理前端参数为空情况
+            return new BaseResponse<String>(false,"更新用户信息失败","",20000);
+        }
+        //根据账号类型进行对应用户账号的信息更新
+        Map<String,Object> map = null;
+        switch (userInfo.getUsertype()){
+            case "admin":
+                map = adminService.updateAdminOne(userInfo);
+                break;
+            case "student":
+                map = studentService.updateStudentOne(userInfo);
+                break;
+            case "teacher":
+                map = teacherService.updateTeacherOne(userInfo);
+        }
+        return new BaseResponse<String>((Boolean) map.get("success"),(String) map.get("msg"),"",20000);
+    }
+
+
 
 }

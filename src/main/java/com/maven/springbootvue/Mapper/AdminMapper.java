@@ -37,4 +37,7 @@ public interface AdminMapper {
 
     //删除管理员用户
     Integer deleteAdminOne(UserInfo userInfo);
+
+    //更新用户信息
+    Integer updateAdminOne(UserInfo userInfo);
 }

@@ -37,4 +37,7 @@ public interface TeacherMapper {
 
     //删除教师用户
     Integer deleteTeacherOne(UserInfo userInfo);
+
+    //更新用户信息
+    Integer updateTeacherOne(UserInfo userInfo);
 }
