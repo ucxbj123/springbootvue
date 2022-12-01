@@ -1,16 +1,18 @@
 package com.maven.springbootvue.Service.Impl;
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.maven.springbootvue.Dto.TeacherDto;
 import com.maven.springbootvue.Dto.UserInfo;
 import com.maven.springbootvue.Mapper.TeacherMapper;
 import com.maven.springbootvue.Pojo.Teacher;
+import org.apache.commons.collections.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author 谢秉均
@@ -156,5 +158,43 @@ public class TeacherServiceImpl {
         }
         return map;
     }
+
+    /**
+    *@description：根据姓名、账号、性别、账号是否正常动态获取分页的教师信息
+    *@param currentPage 当前页
+     * @param pagesize  每页的记录数
+    *@return
+    *@Author 谢秉均
+    *@date 2022/11/29--16:50
+    */
+    public Map<String,Object> getPageTeacher(TeacherDto teacher, Integer currentPage, Integer pagesize){
+        //分页
+        PageHelper.startPage(currentPage,pagesize);
+        List<Teacher> list = teacherMapper.selectDynamic(teacher);
+        PageInfo<Teacher> pageInfo = new PageInfo<>(list);
+
+        //获取分页后的数据
+        List<Teacher> list1 = pageInfo.getList();
+
+        //声明一个列表存储处理后的数据，用于返回前端
+        List<Teacher> list2 = new ArrayList<>();
+
+        if(teacher.getIsdelete()){//若为true则过滤已禁用的账号，否则查询全部的教师账号进行返回
+            for( int i = 0; i < list1.size(); i++){
+                if(list1.get(i).getIsdelete() != 1){
+                    list2.add(list1.get(i));
+                }
+            }
+        }else {
+            list2 = list1;
+        }
+
+        //返回pageinfo与处理好的数据
+        Map<String,Object> map = new LinkedHashMap<>();
+        map.put("teachers",list2);
+        map.put("total",pageInfo.getTotal());
+        return map;
+    }
+
 
 }

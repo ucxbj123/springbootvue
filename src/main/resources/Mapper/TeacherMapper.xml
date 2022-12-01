@@ -98,4 +98,21 @@
         </trim>
         where tno = #{userID}
     </update>
+
+    <!-- List<Teacher> selectDynamic(TeacherDto teacher);-->
+    <select id="selectDynamic" resultType="teacher">
+        select * from tb_teacher
+        <where>
+            <if test="tno !=null and tno !=''">
+                tno = #{tno}
+            </if>
+            <if test="name !=null and name !=''">
+                and name = #{name}
+            </if>
+            <if test="gender !=null and gender !=''">
+                and gender = #{gender}
+            </if>
+        </where>
+    </select>
+
 </mapper>

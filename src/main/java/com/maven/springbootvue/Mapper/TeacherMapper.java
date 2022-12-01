@@ -1,6 +1,7 @@
 package com.maven.springbootvue.Mapper;
 
 
+import com.maven.springbootvue.Dto.TeacherDto;
 import com.maven.springbootvue.Dto.UserInfo;
 import com.maven.springbootvue.Pojo.Teacher;
 import org.apache.ibatis.annotations.Param;
@@ -40,4 +41,7 @@ public interface TeacherMapper {
 
     //更新用户信息
     Integer updateTeacherOne(UserInfo userInfo);
+
+    //根据姓名、账号、性别、账号是否正常动态查询教师信息
+    List<Teacher> selectDynamic(TeacherDto teacher);
 }
