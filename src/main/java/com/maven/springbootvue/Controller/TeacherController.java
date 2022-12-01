@@ -1,10 +1,8 @@
 package com.maven.springbootvue.Controller;
 
-import com.github.pagehelper.PageInfo;
 import com.maven.springbootvue.Dto.BaseResponse;
 import com.maven.springbootvue.Dto.TeacherDto;
 import com.maven.springbootvue.Dto.UserInfo;
-import com.maven.springbootvue.Pojo.Teacher;
 import com.maven.springbootvue.Service.Impl.TeacherServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +54,13 @@ public class TeacherController {
         return new BaseResponse<Map>(true,"查询成功",map,20000);
     }
 
+    /**
+    *@description：修改教师信息
+    *@param
+    *@return
+    *@Author 谢秉均
+    *@date 2022/12/1--16:35
+    */
     @RequestMapping(value = "/updateTeacher",method = RequestMethod.POST)
     public BaseResponse<String> updateTeacher(@RequestBody UserInfo userInfo){
         Map<String,Object> map = teacherService.updateTeacherOne(userInfo);

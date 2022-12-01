@@ -1,15 +1,18 @@
 package com.maven.springbootvue.Service.Impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.maven.springbootvue.Dto.StudentDto;
+import com.maven.springbootvue.Dto.TeacherDto;
 import com.maven.springbootvue.Dto.UserInfo;
 import com.maven.springbootvue.Mapper.StudentMapper;
 import com.maven.springbootvue.Pojo.Student;
+import com.maven.springbootvue.Pojo.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author 谢秉均
@@ -138,6 +141,43 @@ public class StudentServiceImpl {
             map.put("success",false);
             map.put("msg","更新信息失败");
         }
+        return map;
+    }
+
+    /**
+    *@description：根据姓名、账号、性别、账号是否正常动态获取分页的学生信息
+     *@param currentPage 当前页
+     * @param pagesize  每页的记录数
+    *@return
+    *@Author 谢秉均
+    *@date 2022/12/1--16:42
+    */
+    public Map<String,Object> getPageStudent(StudentDto studentDto, Integer currentPage, Integer pagesize){
+        //分页
+        PageHelper.startPage(currentPage,pagesize);
+        List<Student> list = studentMapper.selectDynamic(studentDto);
+        PageInfo<Student> pageInfo = new PageInfo<>(list);
+
+        //获取分页后的数据
+        List<Student> list1 = pageInfo.getList();
+
+        //声明一个列表存储处理后的数据，用于返回前端
+        List<Student> list2 = new ArrayList<>();
+
+        if(studentDto.getIsdelete()){//若为true则过滤已禁用的账号，否则查询全部的教师账号进行返回
+            for( int i = 0; i < list1.size(); i++){
+                if(list1.get(i).getIsdelete() != 1){
+                    list2.add(list1.get(i));
+                }
+            }
+        }else {
+            list2 = list1;
+        }
+
+        //返回pageinfo与处理好的数据
+        Map<String,Object> map = new LinkedHashMap<>();
+        map.put("students",list2);
+        map.put("total",pageInfo.getTotal());
         return map;
     }
 

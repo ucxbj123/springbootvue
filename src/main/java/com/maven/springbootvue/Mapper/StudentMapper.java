@@ -1,5 +1,6 @@
 package com.maven.springbootvue.Mapper;
 
+import com.maven.springbootvue.Dto.StudentDto;
 import com.maven.springbootvue.Dto.UserInfo;
 import com.maven.springbootvue.Pojo.Student;
 import org.apache.ibatis.annotations.Param;
@@ -38,5 +39,8 @@ public interface StudentMapper {
 
     //更新用户信息
     Integer updateStudentOne(UserInfo userInfo);
+
+    //根据姓名、账号、性别、账号是否正常动态查询学生信息
+    List<Student> selectDynamic(StudentDto studentDto);
 
 }

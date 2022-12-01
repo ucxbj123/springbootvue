@@ -99,4 +99,20 @@
         where sno = #{userID}
     </update>
 
+    <!-- List<Student> selectDynamic(StudentDto studentDto);-->
+    <select id="selectDynamic" resultType="student">
+        select * from tb_student
+        <where>
+            <if test="sno !=null and sno !=''">
+                sno = #{sno}
+            </if>
+            <if test="name !=null and name !=''">
+                and name = #{name}
+            </if>
+            <if test="gender !=null and gender !=''">
+                and gender = #{gender}
+            </if>
+        </where>
+    </select>
+
 </mapper>
