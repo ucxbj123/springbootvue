@@ -181,5 +181,54 @@ public class StudentServiceImpl {
         return map;
     }
 
+    /**
+    *@description：通过班级编码查询学生，若cno=null则查询未分配班级的学生，若cno=''则查询全部学生
+    *@param  cno 班级编码
+    *@return
+    *@Author 谢秉均
+    *@date 2022/12/5--11:06
+    */
+    public List<Student> selectByCno(String cno){
+        List<Student> list = studentMapper.selectByCno(cno);
+        return list;
+    }
+
+    /**
+    *@description：
+    *@param  user  进行分配的班级学生名单
+     * @param cno 班级编号
+     * @param clazz_name 班级名称
+     * @param shift 是否分配班级 true：修改学生的所属班级为cno；false：重置学生所属班级为null；取消分配
+    *@return
+    *@Author 谢秉均
+    *@date 2022/12/5--15:41
+    */
+    public Integer updateClazzMore(List<String> user, String cno, String clazz_name, Boolean shift){
+        //new一个新的学生列表，用于执行Mapper的修改班级功能
+        List<Student> students = new ArrayList<>();
+
+        if(shift){//true：修改学生的所属班级为cno；false：重置学生所属班级为null；取消分配
+            for (int i = 0; i < user.size(); i++){
+                Student student = new Student();//循环必须新建一个对象，否则内容添加到students的内容会是同一个学生信息
+                student.setClazz_name(clazz_name);
+                student.setCno(cno);
+                student.setSno(user.get(i));
+                students.add(student);
+            }
+        }else {
+            for (int i = 0; i < user.size(); i++){
+                Student student = new Student();
+                student.setClazz_name(null);
+                student.setCno(null);
+                student.setSno(user.get(i));
+                students.add(student);
+            }
+        }
+        System.out.println("封装好的学生："+students);
+        Integer res = studentMapper.updateClazzMore(students);
+        return res;
+
+    }
+
 
 }

@@ -41,7 +41,7 @@ public class GradeController {
 
     /**
     *@description：获取年级的分页数据
-    *@param  msg
+    *@param  msg    例如:{ gno: this.gno, name: this.name, pagesize: pagesize2, currentPage: currentPage2 }
     *@return
     *@Author 谢秉均
     *@date 2022/11/8--13:51

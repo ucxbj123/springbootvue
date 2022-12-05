@@ -48,6 +48,14 @@ public class Student implements Serializable {
     public Student() {
     }
 
+    public String getCno() {
+        return cno;
+    }
+
+    public void setCno(String cno) {
+        this.cno = cno;
+    }
+
     public Integer getIsdelete() {
         return isdelete;
     }

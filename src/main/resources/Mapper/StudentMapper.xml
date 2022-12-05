@@ -99,6 +99,21 @@
         where sno = #{userID}
     </update>
 
+    <!-- Integer updateClazzMore(@Param("students") List<Student> students);-->
+    <update id="updateClazzMore">
+        update tb_student set
+        <foreach collection="students" item="student" open="clazz_name = case sno" close="end,">
+            when #{student.sno} then #{student.clazz_name}
+        </foreach>
+        <foreach collection="students" item="student" open="cno = case sno" close="end">
+            when #{student.sno} then #{student.cno}
+        </foreach>
+        where sno in 
+        <foreach collection="students" item="student" open="(" close=")" separator=",">
+            #{student.sno}
+        </foreach>
+    </update>
+
     <!-- List<Student> selectDynamic(StudentDto studentDto);-->
     <select id="selectDynamic" resultType="student">
         select * from tb_student
@@ -114,5 +129,21 @@
             </if>
         </where>
     </select>
+    
+    <!-- List<Student> selectByCno(@Param("cno") String cno);-->
+    <select id="selectByCno" resultType="student">
+        select * from tb_student
+        <where>
+            <choose>
+                <when test="cno !=null and cno !=''">
+                    cno = #{cno}
+                </when>
+                <when test="cno == null">
+                    cno is null and clazz_name is null
+                </when>
+            </choose>
+        </where>
+    </select>
+
 
 </mapper>

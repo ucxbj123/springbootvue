@@ -40,7 +40,12 @@ public interface StudentMapper {
     //更新用户信息
     Integer updateStudentOne(UserInfo userInfo);
 
+    //修改学生的归属班级
+    Integer updateClazzMore(@Param("students") List<Student> students);
+
     //根据姓名、账号、性别、账号是否正常动态查询学生信息
     List<Student> selectDynamic(StudentDto studentDto);
 
+    //通过学生归属班级进行查询，根据条件查询已分配班级的学生，未分配班级的学生，全部学生
+    List<Student> selectByCno(@Param("cno") String cno);
 }
