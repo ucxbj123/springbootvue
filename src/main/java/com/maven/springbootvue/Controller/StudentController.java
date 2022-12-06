@@ -30,6 +30,7 @@ public class StudentController {
     @Autowired
     StudentServiceImpl studentService;
 
+
     /**
     *@description：获取学生的分页数据
     *@param
@@ -75,8 +76,10 @@ public class StudentController {
         String cno = data.getString("cno");
         String clazz_name = data.getString("clazz_name");
         Boolean shift = (Boolean) data.get("shift");
-        //执行修改操作
+        //执行批量修改学生所属班级操作
         studentService.updateClazzMore(users, cno, clazz_name, shift);
+        //修改后重新统计班级的总人数并更新
+        studentService.updateClazzNumber(cno);
         return new BaseResponse<String>(true, "学生所属班级修改成功","",20000);
     }
 }

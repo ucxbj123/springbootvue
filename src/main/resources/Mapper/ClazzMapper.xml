@@ -126,4 +126,11 @@
     and name = #{name,jdbcType=VARCHAR}
   </update>
 
+  <!-- Integer updateClazzNumber(@Param("cno")String cno,@Param("number")Integer number);-->
+  <update id="updateClazzNumber">
+    update tb_clazz
+    set number = #{number,jdbcType=INTEGER}
+    where cno = #{cno,jdbcType=VARCHAR}
+  </update>
+
 </mapper>

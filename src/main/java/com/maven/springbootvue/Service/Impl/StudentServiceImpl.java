@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.maven.springbootvue.Dto.StudentDto;
 import com.maven.springbootvue.Dto.TeacherDto;
 import com.maven.springbootvue.Dto.UserInfo;
+import com.maven.springbootvue.Mapper.ClazzMapper;
 import com.maven.springbootvue.Mapper.StudentMapper;
 import com.maven.springbootvue.Pojo.Student;
 import com.maven.springbootvue.Pojo.Teacher;
@@ -24,6 +25,9 @@ public class StudentServiceImpl {
 
     @Autowired
     private StudentMapper studentMapper;
+
+    @Autowired
+    private ClazzMapper clazzMapper;
 
     //学生登录验证
     public Map<String,Object> loginForm(String sno , String password){
@@ -228,6 +232,21 @@ public class StudentServiceImpl {
         Integer res = studentMapper.updateClazzMore(students);
         return res;
 
+    }
+
+    /**
+    *@description：更新班级的最新总人数
+    *@param  cno 班级编码
+    *@return
+    *@Author 谢秉均
+    *@date 2022/12/5--17:34
+    */
+    public void updateClazzNumber(String cno){
+        //查询班级cno的总人数
+        List<Student> list = studentMapper.selectByCno(cno);
+        Integer number = list.size();
+        //更新班级cno的最新总人数
+        clazzMapper.updateClazzNumber(cno, number);
     }
 
 

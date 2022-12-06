@@ -99,7 +99,9 @@
         where sno = #{userID}
     </update>
 
-    <!-- Integer updateClazzMore(@Param("students") List<Student> students);-->
+    <!-- Integer updateClazzMore(@Param("students") List<Student> students);
+        通过与case when结合完成批量修改学生的班级信息（可以根据每个学生不同的信息划分到不同班级，一般批量都是分配到同一个班级）
+    -->
     <update id="updateClazzMore">
         update tb_student set
         <foreach collection="students" item="student" open="clazz_name = case sno" close="end,">

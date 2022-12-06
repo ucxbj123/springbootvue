@@ -55,4 +55,12 @@ public interface ClazzMapper {
      * @return
      */
     Integer deleteClazz(Clazz clazz);
+
+    /**
+     * 更新班级的总人数
+     * @param cno 班级编码
+     * @param number 总人数
+     * @return
+     */
+    Integer updateClazzNumber(@Param("cno")String cno,@Param("number")Integer number);
 }
