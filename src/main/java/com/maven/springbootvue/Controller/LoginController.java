@@ -306,7 +306,7 @@ public class LoginController {
             }
 
         }
-        //当修改密码成功的时候，更新token给到客户端与session
+        //当修改密码成功的时候，更新token给到客户端
         logger.info("updatepassword  旧token："+token);
         String newtoken = JWTUtil.sign(headerToken[0],headerToken[1],newpassword );
         logger.info("updatepassword  新token："+token);

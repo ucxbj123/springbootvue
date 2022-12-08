@@ -1,0 +1,52 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maven.springbootvue.Mapper.ClassMapper">
+
+    <!-- 开启二级缓存-->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+
+    <!-- //根据教师编号(tno)或教师姓名(name)或任课班级编号(cno)查询教师的任课信息
+    List<Class> getCLass(@Param("tno")String tno, @Param("name")String name, @Param("cno") String cno);
+    -->
+    <select id="getCLass" resultType="class">
+        select * from tb_class
+        <where>
+            <if test="tno !=null and tno!=''">
+                tno = #{tno}
+            </if>
+            <if test="name !=null and name!=''">
+                and name = #{name}
+            </if>
+            <if test="cno !=null and cno!=''">
+                and cno = #{cno}
+            </if>
+        </where>
+    </select>
+
+    <!-- //批量插入多条任课记录
+    Integer insertCLassBatch(List<Class> classes);
+    -->
+    <insert id="insertCLassBatch" parameterType="java.util.List">
+        insert into tb_class ( id, tno, name, cno, clazz_name, content)
+        values
+        <foreach collection="classes" item="item" separator=",">
+            (null,#{item.tno},#{item.name},#{item.cno},#{item.clazz_name},#{item.content})
+        </foreach>
+    </insert>
+
+    <!-- //批量删除多条任课记录
+    Integer deleteCLassBatch(@Param("classes") List<Class> classes, @Param("tno") String tno);
+    -->
+    <delete id="deleteCLassBatch" parameterType="java.util.List">
+        delete from tb_class
+        <where>
+            tno = #{tno} and cno in
+            <foreach collection="classes" item="item" open="(" close=")" separator=",">
+                  #{item.cno}
+            </foreach>
+        </where>
+    </delete>
+
+
+</mapper>

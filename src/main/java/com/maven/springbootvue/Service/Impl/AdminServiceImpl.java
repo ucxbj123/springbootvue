@@ -5,6 +5,7 @@ import com.maven.springbootvue.Mapper.AdminMapper;
 import com.maven.springbootvue.Pojo.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
@@ -16,7 +17,7 @@ import java.util.Map;
  * @description
  * @date 2022/10/18--16:54
  */
-@Component
+@Service
 @Transactional
 public class AdminServiceImpl {
 
