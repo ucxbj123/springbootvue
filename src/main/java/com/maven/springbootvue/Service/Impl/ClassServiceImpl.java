@@ -5,6 +5,7 @@ import com.maven.springbootvue.Mapper.ClazzMapper;
 import com.maven.springbootvue.Pojo.Class;
 import com.maven.springbootvue.Pojo.Clazz;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -82,5 +83,33 @@ public class ClassServiceImpl {
             res = classMapper.deleteCLassBatch(list,tno);
         }
         return res;
+    }
+
+    /**
+    *@description：修改任课内容
+    *@Param: tno 教师编号   cno 班级编号 content 任课内容
+    *@return:
+    *@Author: 谢秉均
+    *@date: 2022/12/9--9:53
+    */
+    public Integer updateContent(String tno, String cno, String content){
+        Integer res = classMapper.updateContent(tno,cno,content);
+        return res;
+    }
+
+    /**
+    *@description：根据教师编号和班级编号获取任课内容
+    *@Param:
+    *@return:
+    *@Author: 谢秉均
+    *@date: 2022/12/9--10:16
+    */
+    public String getContentByTnoAndCno(String tno, String cno){
+        String content = "";
+        List<Class> list = classMapper.getCLass(tno,null,cno);
+        if(list.size() >= 1){
+            content = list.get(0).getContent();
+        }
+        return content;
     }
 }

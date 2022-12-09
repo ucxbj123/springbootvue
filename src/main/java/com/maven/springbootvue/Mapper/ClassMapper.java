@@ -22,4 +22,8 @@ public interface ClassMapper {
 
     //批量删除多条任课记录
     Integer deleteCLassBatch(@Param("classes") List<Class> classes, @Param("tno") String tno);
+
+    //更新任课内容
+    Integer updateContent(@Param("tno") String tno, @Param("cno") String cno, @Param("content") String content);
+
 }

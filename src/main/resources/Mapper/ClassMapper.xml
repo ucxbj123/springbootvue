@@ -48,5 +48,12 @@
         </where>
     </delete>
 
+    <!-- //更新任课内容
+    Integer updateContent(@Param("tno") String tno, @Param("cno") String cno, @Param("content") String content);
+    -->
+    <update id="updateContent">
+        update tb_class set content = #{content} where tno = #{tno} and cno = #{cno}
+    </update>
+
 
 </mapper>

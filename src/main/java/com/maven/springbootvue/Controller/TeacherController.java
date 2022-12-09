@@ -115,4 +115,23 @@ public class TeacherController {
         return new BaseResponse<String>(true, "删除任课班级成功", "", 20000);
     }
 
+    /**
+    *@description：修改任课内容
+    *@Param:
+    *@return:
+    *@Author: 谢秉均
+    *@date: 2022/12/9--9:57
+    */
+    @RequestMapping(value = "/updateContent",method = RequestMethod.POST)
+    public BaseResponse<String> updateContent(@RequestParam("tno") String tno, @RequestParam("cno") String cno, @RequestParam("content") String content){
+        classService.updateContent(tno,cno,content);
+        return new BaseResponse<String>(true, "修改任课内容成功", "", 20000);
+    }
+
+    @RequestMapping(value = "/getContentByTnoAndCno",method = RequestMethod.POST)
+    public BaseResponse<String> getContentByTnoAndCno(@RequestParam("tno") String tno, @RequestParam("cno") String cno){
+        String content = classService.getContentByTnoAndCno(tno, cno);
+        return new BaseResponse<String>(true, "获取任课内容成功", content, 20000);
+    }
+
 }
