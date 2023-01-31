@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maven.springbootvue.Mapper.TeststandardMapper">
+  <resultMap id="BaseResultMap" type="com.maven.springbootvue.Pojo.Teststandard">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="StandardCode" jdbcType="VARCHAR" property="standardcode" />
+    <result column="StandardName" jdbcType="VARCHAR" property="standardname" />
+    <result column="StandardProject" jdbcType="VARCHAR" property="standardproject" />
+    <result column="CheckStartPosition" jdbcType="VARCHAR" property="checkstartposition" />
+    <result column="StandardLength" jdbcType="VARCHAR" property="standardlength" />
+    <result column="CheckCondition" jdbcType="VARCHAR" property="checkcondition" />
+    <result column="CheckValue" jdbcType="VARCHAR" property="checkvalue" />
+    <result column="LogicValue" jdbcType="VARCHAR" property="logicvalue" />
+    <result column="CheckCondition1" jdbcType="VARCHAR" property="checkcondition1" />
+    <result column="CheckValue1" jdbcType="VARCHAR" property="checkvalue1" />
+    <result column="IsCheck" jdbcType="BIT" property="ischeck" />
+    <result column="UniqueCheck" jdbcType="BIT" property="uniquecheck" />
+    <result column="ValueType" jdbcType="VARCHAR" property="valuetype" />
+    <result column="IsEnabled" jdbcType="BIT" property="isenabled" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="CreateUser" jdbcType="VARCHAR" property="createuser" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from teststandard
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.maven.springbootvue.Pojo.Teststandard">
+    insert into teststandard (ID, StandardCode, StandardName, 
+      StandardProject, CheckStartPosition, StandardLength, 
+      CheckCondition, CheckValue, LogicValue, 
+      CheckCondition1, CheckValue1, IsCheck, 
+      UniqueCheck, ValueType, IsEnabled, 
+      CreateTime, CreateUser)
+    values (#{id,jdbcType=INTEGER}, #{standardcode,jdbcType=VARCHAR}, #{standardname,jdbcType=VARCHAR}, 
+      #{standardproject,jdbcType=VARCHAR}, #{checkstartposition,jdbcType=VARCHAR}, #{standardlength,jdbcType=VARCHAR}, 
+      #{checkcondition,jdbcType=VARCHAR}, #{checkvalue,jdbcType=VARCHAR}, #{logicvalue,jdbcType=VARCHAR}, 
+      #{checkcondition1,jdbcType=VARCHAR}, #{checkvalue1,jdbcType=VARCHAR}, #{ischeck,jdbcType=BIT}, 
+      #{uniquecheck,jdbcType=BIT}, #{valuetype,jdbcType=VARCHAR}, #{isenabled,jdbcType=BIT}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{createuser,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.maven.springbootvue.Pojo.Teststandard">
+    update teststandard
+    set StandardCode = #{standardcode,jdbcType=VARCHAR},
+      StandardName = #{standardname,jdbcType=VARCHAR},
+      StandardProject = #{standardproject,jdbcType=VARCHAR},
+      CheckStartPosition = #{checkstartposition,jdbcType=VARCHAR},
+      StandardLength = #{standardlength,jdbcType=VARCHAR},
+      CheckCondition = #{checkcondition,jdbcType=VARCHAR},
+      CheckValue = #{checkvalue,jdbcType=VARCHAR},
+      LogicValue = #{logicvalue,jdbcType=VARCHAR},
+      CheckCondition1 = #{checkcondition1,jdbcType=VARCHAR},
+      CheckValue1 = #{checkvalue1,jdbcType=VARCHAR},
+      IsCheck = #{ischeck,jdbcType=BIT},
+      UniqueCheck = #{uniquecheck,jdbcType=BIT},
+      ValueType = #{valuetype,jdbcType=VARCHAR},
+      IsEnabled = #{isenabled,jdbcType=BIT},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      CreateUser = #{createuser,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select ID, StandardCode, StandardName, StandardProject, CheckStartPosition, StandardLength, 
+    CheckCondition, CheckValue, LogicValue, CheckCondition1, CheckValue1, IsCheck, UniqueCheck, 
+    ValueType, IsEnabled, CreateTime, CreateUser
+    from teststandard
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, StandardCode, StandardName, StandardProject, CheckStartPosition, StandardLength, 
+    CheckCondition, CheckValue, LogicValue, CheckCondition1, CheckValue1, IsCheck, UniqueCheck, 
+    ValueType, IsEnabled, CreateTime, CreateUser
+    from teststandard
+  </select>
+</mapper>

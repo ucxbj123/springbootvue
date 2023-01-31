@@ -17,7 +17,7 @@ spring:
       #重启的根目录设置在此以应用整个项目
       additional-paths: src/main/java
   cache:
-    #配置ehcache的配置文件路径，默认开启一级缓存；使用缓存功能需要在Mapper文件使用<cache>
+    #配置ehcache的配置文件路径，默认开启一级缓存；使用二级缓存功能需要在Mapper文件使用<cache>
     ehcache:
       config: classpath:/ehcache.xml
 
@@ -26,8 +26,8 @@ mybatis-plus:
   type-aliases-package: com.maven.springbootvue.Pojo
   configuration:
     map-underscore-to-camel-case: false   #mybatis-plus默认开启驼峰
-    #开二级缓存
-    cache-enabled: true
+    #关闭二级缓存
+    cache-enabled: false
   global-config:
     db-config:
       id-type: auto
