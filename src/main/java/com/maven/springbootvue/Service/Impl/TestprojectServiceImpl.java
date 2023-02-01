@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * @author 谢秉均
- * @description
+ * @description 检验标准逻辑封装
  * @date 2023/2/1--11:40
  */
 @Service
@@ -51,6 +51,12 @@ public class TestprojectServiceImpl {
         int num = testprojectMapper.insert(testproject);
         return num;
     }
+
+    //返回所有的项目
+    public List<Testproject> getTestproject(){
+        return testprojectMapper.selectAll();
+    }
+
 
 
 }
