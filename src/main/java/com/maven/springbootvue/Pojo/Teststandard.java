@@ -43,6 +43,10 @@ public class Teststandard {
 
     private String createuser;  //创建者
 
+    public Teststandard() {
+
+    }
+
     public Integer getId() {
         return id;
     }

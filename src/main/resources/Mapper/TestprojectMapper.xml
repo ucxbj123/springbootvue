@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maven.springbootvue.Mapper.TestprojectMapper">
+  <resultMap id="BaseResultMap" type="com.maven.springbootvue.Pojo.Testproject">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="project" jdbcType="VARCHAR" property="project" />
+    <result column="StandardCode" jdbcType="VARCHAR" property="standardcode" />
+    <result column="StandardName" jdbcType="VARCHAR" property="standardname" />
+    <result column="checkLength" jdbcType="INTEGER" property="checklength" />
+    <result column="isEnabled" jdbcType="BIT" property="isenabled" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="CreateUser" jdbcType="VARCHAR" property="createuser" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from testproject
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.maven.springbootvue.Pojo.Testproject">
+    insert into testproject (ID, project, StandardCode, 
+      StandardName, checkLength, isEnabled, 
+      CreateTime, CreateUser)
+    values (#{id,jdbcType=INTEGER}, #{project,jdbcType=VARCHAR}, #{standardcode,jdbcType=VARCHAR}, 
+      #{standardname,jdbcType=VARCHAR}, #{checklength,jdbcType=INTEGER}, #{isenabled,jdbcType=BIT}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{createuser,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.maven.springbootvue.Pojo.Testproject">
+    update testproject
+    set project = #{project,jdbcType=VARCHAR},
+      StandardCode = #{standardcode,jdbcType=VARCHAR},
+      StandardName = #{standardname,jdbcType=VARCHAR},
+      checkLength = #{checklength,jdbcType=INTEGER},
+      isEnabled = #{isenabled,jdbcType=BIT},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      CreateUser = #{createuser,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select ID, project, StandardCode, StandardName, checkLength, isEnabled, CreateTime, 
+    CreateUser
+    from testproject
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, project, StandardCode, StandardName, checkLength, isEnabled, CreateTime, 
+    CreateUser
+    from testproject
+  </select>
+
+  <!--
+  //灵活通过字段的值进行条件过滤查询
+    List<Testproject> selectByCondition(Testproject testproject);
+   -->
+  <select id="selectByCondition" resultMap="BaseResultMap">
+    select ID, project, StandardCode, StandardName, checkLength, isEnabled, CreateTime,
+    CreateUser
+    from testproject
+    <where>
+      <if test="project !=null and project !=''">
+        project = #{project}
+      </if>
+      <if test="standardcode !=null and standardcode !=''">
+        and StandardCode like "%"#{standardcode}"%"
+      </if>
+      <if test="standardname !=null and standardname !=''">
+        and StandardName = #{standardname}
+      </if>
+      <if test="isenabled !=null and isenabled !=''">
+        and isEnabled = #{isenabled}
+      </if>
+      <if test="createtime !=null and createtime !=''">
+        and CreateTime = #{createtime}
+      </if>
+      <if test="createuser !=null and createuser !=''">
+        and CreateUser = #{createuser}
+      </if>
+    </where>
+  </select>
+</mapper>

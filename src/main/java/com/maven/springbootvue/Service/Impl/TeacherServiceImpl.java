@@ -7,7 +7,6 @@ import com.maven.springbootvue.Dto.TeacherDto;
 import com.maven.springbootvue.Dto.UserInfo;
 import com.maven.springbootvue.Mapper.TeacherMapper;
 import com.maven.springbootvue.Pojo.Teacher;
-import org.apache.commons.collections.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
