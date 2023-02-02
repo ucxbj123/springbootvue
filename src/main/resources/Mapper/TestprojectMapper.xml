@@ -23,6 +23,7 @@
       #{standardname,jdbcType=VARCHAR}, #{checklength,jdbcType=INTEGER}, #{isenabled,jdbcType=BIT}, 
       #{createtime,jdbcType=TIMESTAMP}, #{createuser,jdbcType=VARCHAR})
   </insert>
+
   <update id="updateByPrimaryKey" parameterType="com.maven.springbootvue.Pojo.Testproject">
     update testproject
     set project = #{project,jdbcType=VARCHAR},
@@ -34,6 +35,15 @@
       CreateUser = #{createuser,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=INTEGER}
   </update>
+
+  <!--//更新isenabled的值
+    Integer updateIsenabled(@Param("isenabled") Boolean isenabled, @Param("id") Integer id); -->
+  <update id="updateIsenabled">
+    update testproject
+    set isEnabled = #{isenabled,jdbcType=BIT}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select ID, project, StandardCode, StandardName, checkLength, isEnabled, CreateTime, 
     CreateUser
@@ -75,4 +85,11 @@
       </if>
     </where>
   </select>
+
+  <!-- //根据检验编号删除对应的项目
+    int deleteBystandardcode(@Param("standardcode") String standardcode);-->
+  <delete id="deleteBystandardcode">
+    delete from testproject
+    where StandardCode = #{standardcode}
+  </delete>
 </mapper>

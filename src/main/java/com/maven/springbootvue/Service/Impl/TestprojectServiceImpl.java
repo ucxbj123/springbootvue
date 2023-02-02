@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,8 +24,10 @@ public class TestprojectServiceImpl {
     @Autowired
     private TestprojectMapper testprojectMapper;
 
+    //检验项的操作
     @Autowired
     private TeststandardMapper teststandardMapper;
+
 
     /**
     *@description：新建新的校验项目
@@ -55,6 +57,25 @@ public class TestprojectServiceImpl {
     //返回所有的项目
     public List<Testproject> getTestproject(){
         return testprojectMapper.selectAll();
+    }
+
+    //启用或者禁用项目检验
+    public void updateIsenabled(Boolean isenabled, Integer id){
+        testprojectMapper.updateIsenabled(isenabled, id);
+    }
+
+    /**
+    *@description：删除检验标准项目与明细的检验项
+    *@param
+    *@return
+    *@Author 谢秉均
+    *@date 2023/2/2--16:15
+    */
+    public void deleteProject(String standardcode){
+        //删除检验标准项目
+        testprojectMapper.deleteBystandardcode(standardcode);
+        //删除检验项
+        teststandardMapper.deleteByStandardcode(standardcode);
     }
 
 

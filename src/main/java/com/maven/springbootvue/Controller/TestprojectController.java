@@ -54,4 +54,23 @@ public class TestprojectController {
     public BaseResponse<List<Testproject>> getTestproject(){
         return new BaseResponse<>(true, "查询成功", testprojectService.getTestproject(), 20000);
     }
+
+    /**
+    *@description：启用/禁用项目检验
+    *@param
+    *@return
+    *@Author 谢秉均
+    *@date 2023/2/2--11:03
+    */
+    @RequestMapping(value = "/updateIsenabled",method = RequestMethod.POST)
+    public BaseResponse<String> updateIsenabled(Boolean isenabled, Integer id){
+        testprojectService.updateIsenabled(isenabled,id);
+        return new BaseResponse<String>(true, "启用/禁用成功","启用/禁用成功", 20000);
+    }
+
+    @RequestMapping(value = "/deleteProject",method = RequestMethod.POST)
+    public BaseResponse<String> deleteProject(String standardcode){
+        testprojectService.deleteProject(standardcode);
+        return new BaseResponse<>(true, "删除成功", "", 20000);
+    }
 }

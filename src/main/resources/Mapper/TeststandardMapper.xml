@@ -71,4 +71,41 @@
     ValueType, IsEnabled, CreateTime, CreateUser
     from teststandard
   </select>
+
+
+  <!-- //根据校验标准编号进行对应检验项的删除
+    int deleteByStandardcode(@Param("standardcode") String standardcode);-->
+  <delete id="deleteByStandardcode">
+    delete from teststandard
+    where StandardCode = #{standardcode}
+  </delete>
+
+  <!-- //批量插入检验标准的检验项
+    int insertStandardprojectBatch(@Param("items") List<Teststandard> items);-->
+  <insert id="insertStandardprojectBatch" parameterType="java.util.List">
+    insert into teststandard (ID, StandardCode, StandardName,
+    StandardProject, CheckStartPosition, StandardLength,
+    CheckCondition, CheckValue, LogicValue,
+    CheckCondition1, CheckValue1, IsCheck,
+    UniqueCheck, ValueType, IsEnabled,
+    CreateTime, CreateUser)
+    values
+    <foreach collection="items" item="item" separator=",">
+      (
+      null,#{item.standardcode},#{item.standardname},#{item.standardproject},#{item.checkstartposition},#{item.standardlength},
+      #{item.checkcondition},#{item.checkvalue},#{item.logicvalue},#{item.checkcondition1},#{item.checkvalue1},#{item.ischeck},
+      #{item.uniquecheck},#{item.valuetype},#{item.isenabled},#{item.createtime},#{item.createuser}
+      )
+    </foreach>
+  </insert>
+
+  <!-- //根据校验标准编号进行查询
+    List<Teststandard> getTeststandard(@Param("standardcode") String standardcode);-->
+  <select id="getTeststandard" resultMap="BaseResultMap">
+    select ID, StandardCode, StandardName, StandardProject, CheckStartPosition, StandardLength,
+    CheckCondition, CheckValue, LogicValue, CheckCondition1, CheckValue1, IsCheck, UniqueCheck,
+    ValueType, IsEnabled, CreateTime, CreateUser
+    from teststandard
+    where StandardCode = #{standardcode}
+  </select>
 </mapper>
