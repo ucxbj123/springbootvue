@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
  * @author 谢秉均
  * @date 2023/2/2--21:00
  */
-@NoArgsConstructor
 @Data
 @AllArgsConstructor
 public class StandardResult {
@@ -17,4 +16,31 @@ public class StandardResult {
     private Boolean success;    //校验结果
 
     private String message; //校验返回的信息
+
+    public StandardResult() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Boolean getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(Boolean success) {
+        this.success = success;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

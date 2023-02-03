@@ -1,15 +1,19 @@
 package com.maven.springbootvue.Service.Impl;
 
+import com.maven.springbootvue.Dto.StandardResult;
 import com.maven.springbootvue.Mapper.TestprojectMapper;
 import com.maven.springbootvue.Mapper.TeststandardMapper;
 import com.maven.springbootvue.Pojo.Testproject;
+import com.maven.springbootvue.Pojo.Teststandard;
 import com.maven.springbootvue.Util.CreateStandardCodeUtil;
+import com.maven.springbootvue.Util.StandardUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -76,6 +80,42 @@ public class TestprojectServiceImpl {
         testprojectMapper.deleteBystandardcode(standardcode);
         //删除检验项
         teststandardMapper.deleteByStandardcode(standardcode);
+    }
+    
+    /**
+    *@description：
+    *@param  standardcode 检验标准编号
+     * @param code 需要校验的编码
+    *@return
+    *@Author 谢秉均
+    *@date 2023/2/3--13:55
+    */
+    public List<StandardResult> checkcode(String standardcode, String code){
+        Testproject testproject = new Testproject();
+        testproject.setStandardcode(standardcode);
+        //获取检验标准的长度
+        int len = testprojectMapper.selectByCondition(testproject).get(0).getChecklength();
+        //获取检验标准明细
+        List<Teststandard> teststandards = teststandardMapper.getTeststandard(standardcode);
+        List<StandardResult> results;
+        if(teststandards.size() > 0 && code.length() == len){
+            //校验编码
+            results = StandardUtil.Check(teststandards, len, code);
+        }else if(code.length() != len) {
+            results = new ArrayList<>();
+            StandardResult result = new StandardResult();
+            result.setSuccess(false);
+            result.setMessage("条码长度不等于"+len);
+            results.add(result);
+        }else {
+            results = new ArrayList<>();
+            StandardResult result = new StandardResult();
+            result.setSuccess(false);
+            result.setMessage("检验标准未设置校验项");
+            results.add(result);
+        }
+        return results;
+
     }
 
 

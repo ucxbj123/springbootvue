@@ -1,6 +1,7 @@
 package com.maven.springbootvue.Controller;
 
 import com.maven.springbootvue.Dto.BaseResponse;
+import com.maven.springbootvue.Dto.StandardResult;
 import com.maven.springbootvue.Pojo.Testproject;
 import com.maven.springbootvue.Service.Impl.TestprojectServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,5 +73,19 @@ public class TestprojectController {
     public BaseResponse<String> deleteProject(String standardcode){
         testprojectService.deleteProject(standardcode);
         return new BaseResponse<>(true, "删除成功", "", 20000);
+    }
+
+    /**
+    *@description：校验条码逻辑
+    *@param  standardcode 检验标准编号
+     * @param code 被校验的条码
+    *@return
+    *@Author 谢秉均
+    *@date 2023/2/3--14:19
+    */
+    @RequestMapping(value = "/checkcode",method = RequestMethod.POST)
+    public BaseResponse<List> checkcode(String standardcode, String code){
+        List<StandardResult> list = testprojectService.checkcode(standardcode,code);
+        return new BaseResponse<>(true, "校验", list, 20000);
     }
 }
