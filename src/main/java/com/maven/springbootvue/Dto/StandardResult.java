@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 public class StandardResult {
     private int id; //校验的位置
 
+    private String standardproject; //检验项名称
+
     private Boolean success;    //校验结果
 
     private String message; //校验返回的信息

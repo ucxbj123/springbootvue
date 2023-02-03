@@ -27,11 +27,15 @@ public class StandardUtil {
             if(!result.getSuccess()){//如果第一步的校验参考值的类型失败，则不需要进行后续的值的校验，结束本次循环
                 //添加校验的id
                 result.setId(t.getId());
+                //添加检验项名称，方便前端展示错误位置
+                result.setStandardproject(t.getStandardproject());
                 results.add(result);
                 continue;
             }
             StandardResult result1 = checkValue(t,code,len);
             result1.setId(t.getId());
+            //添加检验项名称，方便前端展示错误位置
+            result1.setStandardproject(t.getStandardproject());
             results.add(result1);
 
         }
