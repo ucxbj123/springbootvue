@@ -41,6 +41,8 @@ CREATE TABLE `tb_admin`  (
 INSERT INTO `tb_admin` VALUES (155, '456', '黄宇辉', '男', '1234com', '3083968068@qq.com', '15111111111', '河南周口', 'image/admin.gif', b'0');
 INSERT INTO `tb_admin` VALUES (156, '123', '梁爽', '男', '1234com', '123@qq.com', '1', '1', 'mage/admin.gif', b'1');
 INSERT INTO `tb_admin` VALUES (157, '789', '冷风', '女', '123com', NULL, NULL, NULL, NULL, b'1');
+INSERT INTO `tb_admin` VALUES (158, 'admin', 'admin', '男', '1234.com', '', '', '', NULL, b'0');
+
 
 -- ----------------------------
 -- Table structure for tb_class
