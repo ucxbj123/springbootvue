@@ -6,7 +6,7 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
 -->
 <configuration scan="false" scanPeriod="60 seconds" debug="true">
     <!-- 定义日志的根目录 -->
-    <property name="LOG_HOME" value="/root/log" />
+    <property name="LOG_HOME" value="./springbootvue/log" />
     <!-- 定义日志文件名称 -->
     <property name="appName" value="springbootvue"></property>
     <!-- ch.qos.logback.core.ConsoleAppender 表示控制台输出 -->
