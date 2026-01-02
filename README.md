@@ -16,7 +16,7 @@
 
 前端：主要是使用vue、elementui、vuex、vue-router和一些第三方工具
 
-后端：springboot、mybatis-plus、Easyexcel、fastjson、shiro（认证和授权框架）、JWT、EHCache（mybatis第三方缓存）
+后端：springboot、mybatis-plus、Easyexcel、fastjson、shiro（认证和授权框架）、JWT、EHCache（mybatis第三方缓存），apache-maven-3.6.0
 
 
 

@@ -2,7 +2,7 @@
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="../config/ehcache.xsd">
     <!-- 磁盘保存路径 -->
-    <diskStore path="F:\git\ehcache"/>
+    <diskStore path="\git\ehcache"/>
 
     <defaultCache
             maxElementsInMemory="1000"
